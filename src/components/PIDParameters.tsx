@@ -29,6 +29,7 @@ const PIDParameters = () => {
         <IonItem>
           <IonRange
             debounce={350}
+            pinFormatter={(value) => value.toFixed(1)}
             onIonChange={(data: any) => {
               let newValue = [...ctrAngle];
               newValue[0] = data.target.value;

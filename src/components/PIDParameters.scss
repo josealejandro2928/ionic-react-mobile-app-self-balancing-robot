@@ -1,15 +1,25 @@
 .PIDParameters {
+  ion-list {
+    padding: 0px;
+  }
+
+  ion-item-divider {
+    min-height: 40px;
+  }
+
   ion-item-divider ion-label {
     color: #fff !important;
     opacity: .9;
     font-weight: 400;
   }
-  ion-item ion-label{
+
+  ion-item ion-label {
     font-size: 15px !important;
 
   }
-  ion-item ion-range{
-    padding: 18px 0px !important;
+
+  ion-item ion-range {
+    padding: 22px 0px !important;
 
   }
 }
