@@ -1,0 +1,21 @@
+.BluetoothList {
+  padding: 8px;
+  box-sizing: border-box;
+
+  ion-list{
+    padding-bottom: 0px;
+  }
+
+  ion-item.item {
+    border-bottom: 1px solid #323232;
+  }
+
+
+  .no-devices {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+  }
+}

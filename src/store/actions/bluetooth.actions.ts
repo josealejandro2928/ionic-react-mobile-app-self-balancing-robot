@@ -1,17 +1,19 @@
+import { SET_DEVICE_CONNECTED_BLUETOOTH, SET_DEVICE_DISCONNECTED_BLUETOOTH } from './../reducers/bluetooth.reducer';
 import {
   SET_LIST_DEVICES_BLUETOOTH,
   ERROR_BLUETOOTH,
   IBluetooth,
-  LOADING_BLUETOOTH,
 } from '../reducers/bluetooth.reducer';
+import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial';
 
-const getBluetoothDevices = (): Promise<Array<IBluetooth>> => {
-  let bluetooth: Array<IBluetooth> = [
-    { name: 'device # 1', id: '45', ip: '15465as4d5asd' },
-    { name: 'device # 2', id: '5', ip: 'asdasd8798' },
+const getBluetoothDevices = async (): Promise<Array<IBluetooth>> => {
+  // let devices: Array<IBluetooth> = await BluetoothSerial.list();
+  let devices: Array<IBluetooth> = [
+    { name: 'SelfBalanced', id: '56', address: '4e:56:89:y' },
+    { name: 'Iphone64', id: '76', address: '4e:56:89:z6' },
   ];
   return new Promise((resolve) => {
-    resolve(bluetooth);
+    resolve(devices);
   });
 };
 
@@ -30,4 +32,17 @@ export const getDevices = () => async (dispatch: Function) => {
     });
   }
 };
-
+export const setDeviceConnected =
+  (data: IBluetooth | null | undefined) => async (dispatch: Function) => {
+    console.log(data);
+    if (data) {
+      dispatch({
+        type: SET_DEVICE_CONNECTED_BLUETOOTH,
+        payload: data,
+      });
+    } else {
+      dispatch({
+        type: SET_DEVICE_DISCONNECTED_BLUETOOTH,
+      });
+    }
+  };
