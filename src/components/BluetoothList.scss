@@ -2,7 +2,7 @@
   padding: 8px;
   box-sizing: border-box;
 
-  ion-list{
+  ion-list {
     padding-bottom: 0px;
   }
 
@@ -17,5 +17,23 @@
     align-items: center;
     flex-direction: column;
     height: 80vh;
+  }
+
+  .state-layout {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    animation: showUp .5s ease;
+  }
+
+  @keyframes showUp {
+    0% {
+      bottom: -100%
+    }
+
+    100% {
+      bottom: 0;
+    }
   }
 }

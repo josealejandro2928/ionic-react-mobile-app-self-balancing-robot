@@ -8,12 +8,13 @@ import { IBluetooth } from '../store/reducers/bluetooth.reducer';
 import './BluetoothList.scss';
 import { lastValueFrom } from 'rxjs';
 import { SpinnerDialog } from '@awesome-cordova-plugins/spinner-dialog';
+import ShowState from './ShowState';
 
 const BluetoothList: React.FC = () => {
   const dispatch = useDispatch();
   const [present] = useIonToast();
   const { list: bluetoothDevices } = useSelector((state: RootState) => state.bluetooth);
-  const { bluetoothConnected } = useSelector((state: RootState) => state.bluetooth);
+  const { bluetoothConnected, isConnected } = useSelector((state: RootState) => state.bluetooth);
   const [selectedBluetooth, setSelectDevice] = useState<IBluetooth | null | undefined>(null);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const BluetoothList: React.FC = () => {
   async function onConnect() {
     try {
       SpinnerDialog.show(`${selectedBluetooth?.name} is connecting...`);
-      // await lastValueFrom(BluetoothSerial.connect(selectedBluetooth?.address as string));
+      await lastValueFrom(BluetoothSerial.connect(selectedBluetooth?.address as string));
       present('Device connected successfully', 2000);
       await dispatch(setDeviceConnected(selectedBluetooth));
       SpinnerDialog.hide();
@@ -51,7 +52,7 @@ const BluetoothList: React.FC = () => {
 
   async function onDisconnect() {
     try {
-      // await BluetoothSerial.disconnect();
+      await BluetoothSerial.disconnect();
       present('Device disconnected', 2000);
       setSelectDevice(null);
       await dispatch(setDeviceConnected(null));
@@ -104,6 +105,12 @@ const BluetoothList: React.FC = () => {
           >
             Disconnect
           </IonButton>
+
+          {isConnected && (
+            <div className='state-layout'>
+              <ShowState></ShowState>
+            </div>
+          )}
         </React.Fragment>
       )}
       {!bluetoothDevices ||

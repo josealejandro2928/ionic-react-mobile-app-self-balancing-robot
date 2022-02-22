@@ -34,7 +34,6 @@ export const getDevices = () => async (dispatch: Function) => {
 };
 export const setDeviceConnected =
   (data: IBluetooth | null | undefined) => async (dispatch: Function) => {
-    console.log(data);
     if (data) {
       dispatch({
         type: SET_DEVICE_CONNECTED_BLUETOOTH,

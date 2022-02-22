@@ -6,11 +6,14 @@ import {
   IonIcon,
   IonModal,
   IonContent,
-  IonLabel,
+  useIonToast,
 } from '@ionic/react';
 import { bluetooth } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
-import { useRouteMatch, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import useEffectUpdate from '../hooks/useEffectUpdate';
+import { RootState } from '../store/reducers';
 import BluetoothList from './BluetoothList';
 import styles from './Header.module.scss';
 
@@ -18,10 +21,16 @@ const Header: React.FC = () => {
   let location = useLocation();
   let [tab, setTab] = useState('');
   let [isBluetoothModalOpen, setOpenBluetoothModal] = useState(false);
+  const { error: bluetoothError } = useSelector((state: RootState) => state.bluetooth);
+  const [present] = useIonToast();
 
   useEffect(() => {
     setTab(location.pathname);
   }, [location, location.pathname]);
+
+  useEffectUpdate(() => {
+    present(`Error in bluetooth: ${bluetoothError}`, 2500);
+  }, [bluetoothError]);
 
   function openModalBluetooth() {
     setOpenBluetoothModal(true);
