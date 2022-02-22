@@ -122,7 +122,7 @@ const BluetoothList: React.FC = () => {
 
           {isConnected && (
             <div className='state-layout'>
-              <ShowState></ShowState>
+              <ShowState multipleSamplint></ShowState>
             </div>
           )}
         </React.Fragment>
