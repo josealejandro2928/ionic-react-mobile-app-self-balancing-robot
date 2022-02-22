@@ -1,5 +1,5 @@
 {
-  "name": "controller-selfbalancing-robot",
+  "name": "controller-selfbalancing-robot-v2",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
