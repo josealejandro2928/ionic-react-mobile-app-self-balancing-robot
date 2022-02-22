@@ -28,7 +28,7 @@ const PIDParameters = () => {
         </IonItemDivider>
         <IonItem>
           <IonRange
-            debounce={450}
+            debounce={350}
             onIonChange={(data: any) => {
               let newValue = [...ctrAngle];
               newValue[0] = data.target.value;

@@ -1,6 +1,6 @@
 {
-	"appId": "ionic.react.test",
-	"appName": "ionic-react",
+	"appId": "apk-controller-selfbalancing-robot.test",
+	"appName": "controller-selfbalancing-robot",
 	"webDir": "build",
 	"bundledWebRuntime": false
 }
