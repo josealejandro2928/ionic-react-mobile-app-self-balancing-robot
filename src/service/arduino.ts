@@ -35,6 +35,12 @@ export function copyObject(data: any) {
   return JSON.parse(JSON.stringify(data));
 }
 
+export async function delayMs(ms = 0) {
+  return new Promise((resolve, _) => {
+    setTimeout(resolve, ms);
+  });
+}
+
 /////////////////////////// INTERFACE TO CONNECT TO ARDUINO ////////////////////////
 export async function arduinoGetRobotState(): Promise<IRobotState> {
   const AMOUNT_DATA_BLUETOOTH_STATE = 7;
@@ -59,8 +65,20 @@ export async function arduinoGetRobotState(): Promise<IRobotState> {
   return rState;
 }
 
-export function getConstantPIDInclination(): Promise<any> {
-  return BluetoothSerial.write(GET_PID_K_INCLINATION);
+/**
+ * @return [Kc, Kp, Kd]
+ */
+export async function getConstantPIDInclination(): Promise<any> {
+  await BluetoothSerial.write(GET_PID_K_INCLINATION);
+  let estado = [];
+  for (let i = 0; i < 3; i++) {
+    let data = await BluetoothSerial.readUntil('\n');
+    if (data && data !== '') {
+      estado.push(parseFloat(data || 0.0));
+    }
+  }
+  await BluetoothSerial.clear();
+  return estado;
 }
 
 export async function setConstantPIDInclination(kc: number, ki: number, kd: number) {
@@ -69,8 +87,20 @@ export async function setConstantPIDInclination(kc: number, ki: number, kd: numb
   await BluetoothSerial.write(data);
 }
 
-export function getConstantPIDVelocity(): Promise<any> {
-  return BluetoothSerial.write(GET_PID_K_VELOCITY);
+/**
+ * @return [Kc, Kp, Kd]
+ */
+export async function getConstantPIDVelocity(): Promise<any> {
+  await BluetoothSerial.write(GET_PID_K_VELOCITY);
+  let estado = [];
+  for (let i = 0; i < 3; i++) {
+    let data = await BluetoothSerial.readUntil('\n');
+    if (data && data !== '') {
+      estado.push(parseFloat(data || 0.0));
+    }
+  }
+  await BluetoothSerial.clear();
+  return estado;
 }
 
 export async function setConstantPIDVelocity(kc: number, ki: number, kd: number) {

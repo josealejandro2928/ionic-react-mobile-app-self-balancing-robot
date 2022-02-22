@@ -1,5 +1,6 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import './Tab2.css';
+import { IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
+import PIDParameters from '../components/PIDParameters';
+import './Tab2.scss';
 
 const Tab2: React.FC = () => {
   return (
@@ -8,8 +9,8 @@ const Tab2: React.FC = () => {
         <IonHeader>
           <IonToolbar></IonToolbar>
         </IonHeader>
-        
-        ion asdas dasd asd
+
+        <PIDParameters></PIDParameters>
       </IonContent>
     </IonPage>
   );

@@ -55,7 +55,12 @@ const Header: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonModal isOpen={isBluetoothModalOpen}>
+      <IonModal
+        isOpen={isBluetoothModalOpen}
+        onDidDismiss={() => {
+          setOpenBluetoothModal(false);
+        }}
+      >
         <IonContent>
           <IonToolbar>
             <h4 className='ion-padding-start'>Bluetooth Devices</h4>

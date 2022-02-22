@@ -7,11 +7,11 @@ import {
 import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial';
 
 const getBluetoothDevices = async (): Promise<Array<IBluetooth>> => {
-  // let devices: Array<IBluetooth> = await BluetoothSerial.list();
-  let devices: Array<IBluetooth> = [
-    { name: 'SelfBalanced', id: '56', address: '4e:56:89:y' },
-    { name: 'Iphone64', id: '76', address: '4e:56:89:z6' },
-  ];
+  let devices: Array<IBluetooth> = await BluetoothSerial.list();
+  // let devices: Array<IBluetooth> = [
+  //   { name: 'SelfBalanced', id: '56', address: '4e:56:89:y' },
+  //   { name: 'Iphone64', id: '76', address: '4e:56:89:z6' },
+  // ];
   return new Promise((resolve) => {
     resolve(devices);
   });

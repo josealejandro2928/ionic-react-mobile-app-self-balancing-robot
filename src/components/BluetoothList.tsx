@@ -18,8 +18,13 @@ const BluetoothList: React.FC = () => {
   const [selectedBluetooth, setSelectDevice] = useState<IBluetooth | null | undefined>(null);
 
   useEffect(() => {
-    dispatch(getDevices());
-    checkBluetoothEnabled();
+    (async () => {
+      dispatch(getDevices());
+      await checkBluetoothEnabled();
+      if (isConnected) {
+        setSelectDevice(bluetoothConnected);
+      }
+    })();
   }, []);
 
   async function checkBluetoothEnabled() {
@@ -41,11 +46,19 @@ const BluetoothList: React.FC = () => {
   async function onConnect() {
     try {
       SpinnerDialog.show(`${selectedBluetooth?.name} is connecting...`);
-      await lastValueFrom(BluetoothSerial.connect(selectedBluetooth?.address as string));
-      present('Device connected successfully', 2000);
-      await dispatch(setDeviceConnected(selectedBluetooth));
-      SpinnerDialog.hide();
+      BluetoothSerial.connect(selectedBluetooth?.address as string).subscribe(
+        (_) => {
+          dispatch(setDeviceConnected(selectedBluetooth));
+          present('Device connected successfully', 2000);
+          SpinnerDialog.hide();
+        },
+        (_) => {
+          present('Error: Device is not connected', 2000);
+          SpinnerDialog.hide();
+        }
+      );
     } catch (e) {
+      console.log(e);
       present('Error: Device is not connected', 2000);
     }
   }
@@ -81,6 +94,7 @@ const BluetoothList: React.FC = () => {
                 </IonLabel>
                 <IonCheckbox
                   checked={selectedBluetooth?.address === device.address}
+                  disabled={isConnected === true}
                   slot='end'
                   color='primary'
                 />
@@ -88,7 +102,7 @@ const BluetoothList: React.FC = () => {
             ))}
           </IonList>
           <IonButton
-            disabled={!selectedBluetooth}
+            disabled={!selectedBluetooth || isConnected === true}
             style={{ marginTop: 8 }}
             expand='block'
             fill='outline'
