@@ -1,14 +1,13 @@
 import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, useIonToast } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDevices, setDeviceConnected } from '../store/actions/bluetooth.actions';
-import { RootState } from '../store/reducers';
+import { getDevices, setDeviceConnected } from '../../store/actions/bluetooth.actions';
+import { RootState } from '../../store/reducers';
 import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial';
-import { IBluetooth } from '../store/reducers/bluetooth.reducer';
+import { IBluetooth } from '../../store/reducers/bluetooth.reducer';
 import './BluetoothList.scss';
-import { lastValueFrom } from 'rxjs';
 import { SpinnerDialog } from '@awesome-cordova-plugins/spinner-dialog';
-import ShowState from './ShowState';
+import ShowState from './../ShowState/ShowState';
 
 const BluetoothList: React.FC = () => {
   const dispatch = useDispatch();

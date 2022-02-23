@@ -12,10 +12,10 @@ import { bluetooth } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import useEffectUpdate from '../hooks/useEffectUpdate';
-import { RootState } from '../store/reducers';
-import BluetoothList from './BluetoothList';
-import styles from './Header.module.scss';
+import useEffectUpdate from '../../hooks/useEffectUpdate';
+import { RootState } from '../../store/reducers';
+import BluetoothList from './../BluetoothList/BluetoothList';
+import './Header.scss';
 
 const Header: React.FC = () => {
   let location = useLocation();
@@ -37,7 +37,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <React.Fragment>
+    <div className='Header'>
       <IonHeader>
         <IonToolbar>
           {tab === '/tab1' && <IonTitle>Home</IonTitle>}
@@ -77,7 +77,7 @@ const Header: React.FC = () => {
           <BluetoothList />
         </IonContent>
       </IonModal>
-    </React.Fragment>
+    </div>
   );
 };
 

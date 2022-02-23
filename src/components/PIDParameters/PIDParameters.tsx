@@ -3,16 +3,23 @@ import {
   IonItemDivider,
   IonLabel,
   IonList,
-  IonListHeader,
   IonNote,
   IonRange,
   IonToggle,
+  useIonToast,
 } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRobotState } from '../store/actions/robot.actions';
-import { RootState } from '../store/reducers';
+import { getRobotState } from '../../store/actions/robot.actions';
+import { RootState } from '../../store/reducers';
 import './PIDParameters.scss';
+
+import {
+  getConstantPIDAngularVelocity,
+  getConstantPIDVelocity,
+  getConstantPIDInclination,
+  delayMs,
+} from '../../service/arduino';
 
 const PIDParameters = () => {
   const iKc = 23.75;
@@ -32,6 +39,27 @@ const PIDParameters = () => {
   const [editCtrAngle, setEditCtrAngle] = useState(false);
   const [editCtrVel, setEditCtrVel] = useState(false);
   const [editCtrRot, setEditCtrRot] = useState(false);
+  const [present] = useIonToast();
+
+  useEffect(() => {
+    getData();
+    return () => {};
+  }, []);
+
+  ///////////GETTING THE CURRENT PARAMETTERS OF THE CONTROLLERS ////////////////////////////
+  async function getData() {
+    try {
+      console.log(1);
+      await delayMs(1230);
+      console.log(2);
+      await delayMs(1230);
+      console.log(3);
+    } catch (e) {
+      present('The Robot is not connected, or something happend');
+    }
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////
 
   function pinFormater(value: number) {
     return value.toFixed(1);
@@ -184,7 +212,7 @@ const PIDParameters = () => {
 
         <IonItem>
           <IonRange
-           disabled={!editCtrRot}
+            disabled={!editCtrRot}
             debounce={250}
             pinFormatter={pinFormater}
             onIonChange={(e) => setRotCtrNewValue(e, 0)}
@@ -200,7 +228,7 @@ const PIDParameters = () => {
         </IonItem>
         <IonItem>
           <IonRange
-           disabled={!editCtrRot}
+            disabled={!editCtrRot}
             debounce={250}
             pinFormatter={pinFormater}
             onIonChange={(e) => setRotCtrNewValue(e, 1)}
@@ -216,7 +244,7 @@ const PIDParameters = () => {
         </IonItem>
         <IonItem>
           <IonRange
-           disabled={!editCtrRot}
+            disabled={!editCtrRot}
             debounce={100}
             pinFormatter={pinFormater}
             onIonChange={(e) => setRotCtrNewValue(e, 2)}

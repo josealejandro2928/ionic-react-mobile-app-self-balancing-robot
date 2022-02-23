@@ -1,8 +1,8 @@
 import { IonItem, IonLabel, IonList, IonListHeader, IonNote } from '@ionic/react';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRobotState } from '../store/actions/robot.actions';
-import { RootState } from '../store/reducers';
+import { getRobotState } from '../../store/actions/robot.actions';
+import { RootState } from '../../store/reducers';
 import './ShowState.scss';
 
 const ShowState = ({ multipleSamplint = false }: { multipleSamplint?: boolean }) => {

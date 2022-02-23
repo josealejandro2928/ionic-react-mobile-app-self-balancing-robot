@@ -1,5 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
-import PIDParameters from '../components/PIDParameters';
+import PIDParameters from '../components/PIDParameters/PIDParameters';
 import './Tab2.scss';
 
 const Tab2: React.FC = () => {

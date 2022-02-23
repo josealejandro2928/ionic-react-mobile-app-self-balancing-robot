@@ -110,7 +110,16 @@ export async function setConstantPIDVelocity(kc: number, ki: number, kd: number)
 }
 
 export async function getConstantPIDAngularVelocity(): Promise<any> {
-  return BluetoothSerial.write(GET_PID_K_ANGULAR_VELOCITY);
+  await BluetoothSerial.write(GET_PID_K_ANGULAR_VELOCITY);
+  let estado = [];
+  for (let i = 0; i < 3; i++) {
+    let data = await BluetoothSerial.readUntil('\n');
+    if (data && data !== '') {
+      estado.push(parseFloat(data || 0.0));
+    }
+  }
+  await BluetoothSerial.clear();
+  return estado;
 }
 
 export async function setConstantPIDAngularVelocity(kc: number, ki: number, kd: number) {
