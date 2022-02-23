@@ -52,7 +52,12 @@ const bluetoothReducer = (
     case LOADING_BLUETOOTH:
       return { ...state, loading: payload };
     case ERROR_BLUETOOTH:
-      return { ...state, error: payload, loading: false };
+      return {
+        ...state,
+        error: payload,
+        isConnected: false,
+        bluetoothConnected: null,
+      };
     default:
       return state;
   }

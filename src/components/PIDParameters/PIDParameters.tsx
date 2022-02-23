@@ -129,7 +129,7 @@ const PIDParameters = () => {
         <IonItem>
           <IonRange
             disabled={!editCtrAngle}
-            debounce={250}
+            debounce={200}
             pinFormatter={pinFormater}
             onIonChange={(e) => setAngleCtrNewValue(e, 0)}
             pin
@@ -145,13 +145,13 @@ const PIDParameters = () => {
         <IonItem>
           <IonRange
             disabled={!editCtrAngle}
-            debounce={250}
+            debounce={200}
             pinFormatter={pinFormater}
             onIonChange={(e) => setAngleCtrNewValue(e, 1)}
             pin
             min={0}
             max={50}
-            step={0.1}
+            step={0.05}
             value={ctrAngle[1]}
           >
             <IonLabel slot='start'>Ki:</IonLabel>
@@ -188,13 +188,13 @@ const PIDParameters = () => {
         <IonItem>
           <IonRange
             disabled={!editCtrVel}
-            debounce={250}
+            debounce={200}
             pinFormatter={pinFormater}
             onIonChange={(e) => setVelCtrNewValue(e, 0)}
             pin
             min={0}
             max={25}
-            step={0.1}
+            step={0.05}
             value={ctrVel[0]}
           >
             <IonLabel slot='start'>Kc:</IonLabel>
@@ -204,13 +204,13 @@ const PIDParameters = () => {
         <IonItem>
           <IonRange
             disabled={!editCtrVel}
-            debounce={250}
+            debounce={200}
             pinFormatter={pinFormater}
             onIonChange={(e) => setVelCtrNewValue(e, 1)}
             pin
             min={0}
             max={25}
-            step={0.1}
+            step={0.05}
             value={ctrVel[1]}
           >
             <IonLabel slot='start'>Ki:</IonLabel>
