@@ -41,7 +41,7 @@ const Header: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           {tab === '/tab1' && <IonTitle>Home</IonTitle>}
-          {tab === '/tab2' && <IonTitle>Parameters</IonTitle>}
+          {tab === '/tab2' && <IonTitle>Adjust Controllers</IonTitle>}
           {tab === '/tab3' && <IonTitle>Tab3</IonTitle>}
 
           <IonButton
