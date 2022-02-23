@@ -8,9 +8,8 @@ import {
   IonToggle,
   useIonToast,
 } from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getRobotState } from '../../store/actions/robot.actions';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reducers';
 import './PIDParameters.scss';
 
@@ -18,6 +17,9 @@ import {
   getConstantPIDAngularVelocity,
   getConstantPIDVelocity,
   getConstantPIDInclination,
+  setConstantPIDInclination,
+  setConstantPIDVelocity,
+  setConstantPIDAngularVelocity,
   delayMs,
 } from '../../service/arduino';
 
@@ -35,27 +37,38 @@ const PIDParameters = () => {
   const [ctrAngle, setCtrAngle] = useState<Array<number>>([iKc, iKi, iKd]);
   const [ctrVel, setCtrVel] = useState<Array<number>>([vKc, vKi, vKd]);
   const [ctrRot, setCtrRot] = useState<Array<number>>([rKc, rKi, rKd]);
+  const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
   const [editCtrAngle, setEditCtrAngle] = useState(false);
   const [editCtrVel, setEditCtrVel] = useState(false);
   const [editCtrRot, setEditCtrRot] = useState(false);
   const [present] = useIonToast();
+  const { isConnected } = useSelector((state: RootState) => state.bluetooth);
 
   useEffect(() => {
-    getData();
-    return () => {};
-  }, []);
+    if (isConnected) {
+      getData();
+    } else {
+      present('Your device is not connected, you are not allowed to change the parameters.', 3000);
+    }
+  }, [isConnected]);
 
   ///////////GETTING THE CURRENT PARAMETTERS OF THE CONTROLLERS ////////////////////////////
   async function getData() {
     try {
-      console.log(1);
-      await delayMs(1230);
-      console.log(2);
-      await delayMs(1230);
-      console.log(3);
+      await delayMs(130);
+      const dataAngle = await getConstantPIDInclination();
+      setCtrAngle(dataAngle);
+      await delayMs(230);
+      const dataVel = await getConstantPIDVelocity();
+      setCtrVel(dataVel);
+      await delayMs(230);
+      const dataRot = await getConstantPIDAngularVelocity();
+      setCtrRot(dataRot);
+      await delayMs(500);
+      setFirstLoad(false);
     } catch (e) {
-      present('The Robot is not connected, or something happend');
+      present('The Robot is not connected, or something happend', 2000);
     }
   }
 
@@ -65,22 +78,40 @@ const PIDParameters = () => {
     return value.toFixed(1);
   }
 
-  function setAngleCtrNewValue(data: any, index: number) {
+  async function setAngleCtrNewValue(data: any, index: number) {
+    if (firstLoad) return;
     let newValue = [...ctrAngle];
     newValue[index] = data.target.value;
-    setCtrAngle([...newValue]);
+    try {
+      setCtrAngle([...newValue]);
+      await setConstantPIDInclination(newValue[0], newValue[1], newValue[2]);
+    } catch (e) {
+      present('Error: Something happend sending the PID Inclination Parameters');
+    }
   }
 
-  function setVelCtrNewValue(data: any, index: number) {
+  async function setVelCtrNewValue(data: any, index: number) {
+    if (firstLoad) return;
     let newValue = [...ctrVel];
     newValue[index] = data.target.value;
-    setCtrVel([...newValue]);
+    try {
+      setCtrVel([...newValue]);
+      await setConstantPIDVelocity(newValue[0], newValue[1], newValue[2]);
+    } catch (e) {
+      present('Error: Something happend sending the PID Velocity Parameters');
+    }
   }
 
-  function setRotCtrNewValue(data: any, index: number) {
+  async function setRotCtrNewValue(data: any, index: number) {
+    if (firstLoad) return;
     let newValue = [...ctrRot];
     newValue[index] = data.target.value;
-    setCtrRot([...newValue]);
+    try {
+      setCtrRot([...newValue]);
+      await setConstantPIDAngularVelocity(newValue[0], newValue[1], newValue[2]);
+    } catch (e) {
+      present('Error: Something happend sending the PID Velocity Parameters');
+    }
   }
 
   return (
@@ -92,6 +123,7 @@ const PIDParameters = () => {
             slot='end'
             checked={editCtrAngle}
             onIonChange={(e: any) => setEditCtrAngle(e.detail.checked)}
+            disabled={!isConnected}
           />
         </IonItemDivider>
         <IonItem>
@@ -148,6 +180,7 @@ const PIDParameters = () => {
           <IonToggle
             slot='end'
             checked={editCtrVel}
+            disabled={!isConnected}
             onIonChange={(e: any) => setEditCtrVel(e.detail.checked)}
           />
         </IonItemDivider>
@@ -206,6 +239,7 @@ const PIDParameters = () => {
           <IonToggle
             slot='end'
             checked={editCtrRot}
+            disabled={!isConnected}
             onIonChange={(e: any) => setEditCtrRot(e.detail.checked)}
           />
         </IonItemDivider>

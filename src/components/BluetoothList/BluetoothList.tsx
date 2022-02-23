@@ -119,11 +119,11 @@ const BluetoothList: React.FC = () => {
             Disconnect
           </IonButton>
 
-          {isConnected && (
+          {/* {isConnected && (
             <div className='state-layout'>
               <ShowState multipleSamplint></ShowState>
             </div>
-          )}
+          )} */}
         </React.Fragment>
       )}
       {!bluetoothDevices ||

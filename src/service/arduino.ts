@@ -18,7 +18,7 @@ const STOP_POINT_TRACKER_MODE = 'S';
 //////Data typing//////
 export function convertFloat2Uint8Array(src: any, type: any): any {
   let buffer = new ArrayBuffer(src.byteLength);
-  // let baseView = new src.constructor(buffer).set(src);
+  new src.constructor(buffer).set(src);
   return new type(buffer);
 }
 
@@ -68,13 +68,18 @@ export async function arduinoGetRobotState(): Promise<IRobotState> {
 /**
  * @return [Kc, Kp, Kd]
  */
+
 export async function getConstantPIDInclination(): Promise<any> {
+  const estado: any[] = [];
   await BluetoothSerial.write(GET_PID_K_INCLINATION);
-  let estado = [];
+  let count = await BluetoothSerial.available();
+  while (count < 20) {
+    count = await BluetoothSerial.available();
+  }
   for (let i = 0; i < 3; i++) {
-    let data = await BluetoothSerial.readUntil('\n');
-    if (data && data !== '') {
-      estado.push(parseFloat(data || 0.0));
+    const data = await BluetoothSerial.readUntil('\n');
+    if (data && data !== '' && data.length > 1) {
+      estado.push(parseFloat(data));
     }
   }
   await BluetoothSerial.clear();
@@ -91,12 +96,16 @@ export async function setConstantPIDInclination(kc: number, ki: number, kd: numb
  * @return [Kc, Kp, Kd]
  */
 export async function getConstantPIDVelocity(): Promise<any> {
+  const estado: any[] = [];
   await BluetoothSerial.write(GET_PID_K_VELOCITY);
-  let estado = [];
+  let count = await BluetoothSerial.available();
+  while (count < 14) {
+    count = await BluetoothSerial.available();
+  }
   for (let i = 0; i < 3; i++) {
-    let data = await BluetoothSerial.readUntil('\n');
-    if (data && data !== '') {
-      estado.push(parseFloat(data || 0.0));
+    const data = await BluetoothSerial.readUntil('\n');
+    if (data && data !== '' && data.length > 1) {
+      estado.push(parseFloat(data));
     }
   }
   await BluetoothSerial.clear();
@@ -110,12 +119,16 @@ export async function setConstantPIDVelocity(kc: number, ki: number, kd: number)
 }
 
 export async function getConstantPIDAngularVelocity(): Promise<any> {
+  const estado: any[] = [];
   await BluetoothSerial.write(GET_PID_K_ANGULAR_VELOCITY);
-  let estado = [];
+  let count = await BluetoothSerial.available();
+  while (count < 14) {
+    count = await BluetoothSerial.available();
+  }
   for (let i = 0; i < 3; i++) {
-    let data = await BluetoothSerial.readUntil('\n');
-    if (data && data !== '') {
-      estado.push(parseFloat(data || 0.0));
+    const data = await BluetoothSerial.readUntil('\n');
+    if (data && data !== '' && data.length > 1) {
+      estado.push(parseFloat(data));
     }
   }
   await BluetoothSerial.clear();
@@ -143,12 +156,12 @@ export async function setRobotPointTraker(posX: number, posY: number) {
   await BluetoothSerial.write(data);
 }
 
-export function stopRobotPointTracker(): Promise<any> {
-  return BluetoothSerial.write(STOP_POINT_TRACKER_MODE);
+export async function stopRobotPointTracker() {
+  await BluetoothSerial.write(STOP_POINT_TRACKER_MODE);
 }
 
-export function resetDynamicalState(): Promise<any> {
-  return BluetoothSerial.write(RESET_DYNAMICAL_STATE);
+export async function resetDynamicalState(): Promise<any> {
+  await BluetoothSerial.write(RESET_DYNAMICAL_STATE);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////

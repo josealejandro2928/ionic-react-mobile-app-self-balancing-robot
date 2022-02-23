@@ -1,5 +1,5 @@
 {
-	"appId": "apk-controller-selfbalancing-robot-v2.test",
+	"appId": "apk.controller.selfbalancing.robot.v2.test",
 	"appName": "controller-selfbalancing-robot-v2",
 	"webDir": "build",
 	"bundledWebRuntime": false
