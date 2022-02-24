@@ -1,7 +1,11 @@
 import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, useIonToast } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDevices, setDeviceConnected } from '../../store/actions/bluetooth.actions';
+import {
+  getDevices,
+  setDeviceConnected,
+  errorDeviceConnection,
+} from '../../store/actions/bluetooth.actions';
 import { RootState } from '../../store/reducers';
 import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial';
 import { IBluetooth } from '../../store/reducers/bluetooth.reducer';
@@ -45,17 +49,32 @@ const BluetoothList: React.FC = () => {
   async function onConnect() {
     try {
       SpinnerDialog.show(`${selectedBluetooth?.name} is connecting...`);
-      BluetoothSerial.connect(selectedBluetooth?.address as string).subscribe(
-        (_) => {
+      BluetoothSerial.connect(selectedBluetooth?.address as string).subscribe({
+        next: () => {
           dispatch(setDeviceConnected(selectedBluetooth));
           present('Device connected successfully', 2000);
           SpinnerDialog.hide();
         },
-        (_) => {
-          present('Error: Device is not connected', 2000);
+        error: (e: Error) => {
+          present(
+            `Error: ${e.message || 'Device is not connected'}\n You must to connect it again!`,
+            3000
+          );
+          dispatch(errorDeviceConnection(e.message || 'Lost connection'));
           SpinnerDialog.hide();
-        }
-      );
+        },
+      });
+      // BluetoothSerial.connect(selectedBluetooth?.address as string).subscribe(
+      //   (_) => {
+      //     dispatch(setDeviceConnected(selectedBluetooth));
+      //     present('Device connected successfully', 2000);
+      //     SpinnerDialog.hide();
+      //   },
+      //   (_) => {
+      //     present('Error: Device is not connected', 2000);
+      //     SpinnerDialog.hide();
+      //   }
+      // );
     } catch (e) {
       console.log(e);
       present('Error: Device is not connected', 2000);

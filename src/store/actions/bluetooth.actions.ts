@@ -1,9 +1,11 @@
-import { SET_DEVICE_CONNECTED_BLUETOOTH, SET_DEVICE_DISCONNECTED_BLUETOOTH } from './../reducers/bluetooth.reducer';
 import {
-  SET_LIST_DEVICES_BLUETOOTH,
+  SET_DEVICE_CONNECTED_BLUETOOTH,
+  SET_DEVICE_DISCONNECTED_BLUETOOTH,
   ERROR_BLUETOOTH,
+  SET_LIST_DEVICES_BLUETOOTH,
   IBluetooth,
 } from '../reducers/bluetooth.reducer';
+
 import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial';
 
 const getBluetoothDevices = async (): Promise<Array<IBluetooth>> => {
@@ -45,3 +47,10 @@ export const setDeviceConnected =
       });
     }
   };
+
+export const errorDeviceConnection = (msg: string) => async (dispatch: Function) => {
+  dispatch({
+    type: ERROR_BLUETOOTH,
+    payload: null,
+  });
+};

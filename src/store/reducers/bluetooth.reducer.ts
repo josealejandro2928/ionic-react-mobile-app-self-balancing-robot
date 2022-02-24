@@ -46,9 +46,9 @@ const bluetoothReducer = (
       return { ...state, list: payload, loading: false };
     case SET_DEVICE_CONNECTED_BLUETOOTH:
       const result: IBluetooth = payload as IBluetooth;
-      return { ...state, bluetoothConnected: result, isConnected: true };
+      return { ...state, bluetoothConnected: result, isConnected: true, error: null };
     case SET_DEVICE_DISCONNECTED_BLUETOOTH:
-      return { ...state, bluetoothConnected: null, isConnected: false };
+      return { ...state, bluetoothConnected: null, isConnected: false, error: null };
     case LOADING_BLUETOOTH:
       return { ...state, loading: payload };
     case ERROR_BLUETOOTH:

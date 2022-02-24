@@ -48,9 +48,13 @@ const PIDParameters = () => {
   useEffect(() => {
     if (isConnected) {
       getData();
-    } else {
-      present('Your device is not connected, you are not allowed to change the parameters.', 3000);
+    }else{
+      setEditCtrAngle(false);
+      setEditCtrVel(false);
+      setEditCtrRot(false);
+
     }
+    // present('Your device is not connected, you are not allowed to change the parameters.', 3000);
   }, [isConnected]);
 
   ///////////GETTING THE CURRENT PARAMETTERS OF THE CONTROLLERS ////////////////////////////

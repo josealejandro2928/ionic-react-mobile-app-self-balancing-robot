@@ -29,7 +29,9 @@ const Header: React.FC = () => {
   }, [location, location.pathname]);
 
   useEffectUpdate(() => {
-    present(`Error in bluetooth: ${bluetoothError}`, 2500);
+    if (bluetoothError) {
+      present(`Error in bluetooth: ${bluetoothError}`, 2500);
+    }
   }, [bluetoothError]);
 
   function openModalBluetooth() {
