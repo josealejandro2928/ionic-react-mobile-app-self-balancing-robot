@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import useEffectUpdate from '../../hooks/useEffectUpdate';
 import { RootState } from '../../store/reducers';
+import BetteryLevel from '../BatteryLevel/BatteryLevel';
 import BluetoothList from './../BluetoothList/BluetoothList';
 import './Header.scss';
 
@@ -54,6 +55,7 @@ const Header: React.FC = () => {
           >
             <IonIcon style={{ color: '#fff', fontSize: '24px' }} icon={bluetooth} />
           </IonButton>
+          <BetteryLevel slot='end'></BetteryLevel>
         </IonToolbar>
       </IonHeader>
 

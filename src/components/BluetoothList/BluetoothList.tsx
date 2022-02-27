@@ -1,5 +1,5 @@
 import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, useIonToast } from '@ionic/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getDevices,
@@ -12,6 +12,7 @@ import { IBluetooth } from '../../store/reducers/bluetooth.reducer';
 import './BluetoothList.scss';
 import { SpinnerDialog } from '@awesome-cordova-plugins/spinner-dialog';
 import ShowState from './../ShowState/ShowState';
+import { Subscription } from 'rxjs';
 
 const BluetoothList: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const BluetoothList: React.FC = () => {
   const { list: bluetoothDevices } = useSelector((state: RootState) => state.bluetooth);
   const { bluetoothConnected, isConnected } = useSelector((state: RootState) => state.bluetooth);
   const [selectedBluetooth, setSelectDevice] = useState<IBluetooth | null | undefined>(null);
+  const bluetoothSubs = useRef<Subscription | null>();
 
   useEffect(() => {
     (async () => {
@@ -49,7 +51,9 @@ const BluetoothList: React.FC = () => {
   async function onConnect() {
     try {
       SpinnerDialog.show(`${selectedBluetooth?.name} is connecting...`);
-      BluetoothSerial.connect(selectedBluetooth?.address as string).subscribe({
+      bluetoothSubs.current = BluetoothSerial.connect(
+        selectedBluetooth?.address as string
+      ).subscribe({
         next: () => {
           dispatch(setDeviceConnected(selectedBluetooth));
           present('Device connected successfully', 2000);
@@ -62,19 +66,9 @@ const BluetoothList: React.FC = () => {
           );
           dispatch(errorDeviceConnection(e.message || 'Lost connection'));
           SpinnerDialog.hide();
+          bluetoothSubs.current?.unsubscribe();
         },
       });
-      // BluetoothSerial.connect(selectedBluetooth?.address as string).subscribe(
-      //   (_) => {
-      //     dispatch(setDeviceConnected(selectedBluetooth));
-      //     present('Device connected successfully', 2000);
-      //     SpinnerDialog.hide();
-      //   },
-      //   (_) => {
-      //     present('Error: Device is not connected', 2000);
-      //     SpinnerDialog.hide();
-      //   }
-      // );
     } catch (e) {
       console.log(e);
       present('Error: Device is not connected', 2000);

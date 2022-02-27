@@ -13,6 +13,7 @@ const GET_PID_K_ANGULAR_VELOCITY = 'H';
 const RESET_DYNAMICAL_STATE = 'R';
 const POINT_TRACKER_MODE = 'P';
 const STOP_POINT_TRACKER_MODE = 'S';
+const GET_BATTERY_STATE = 'T';
 ///////////////////////////////////////
 
 //////Data typing//////
@@ -69,7 +70,7 @@ export async function arduinoGetRobotState(): Promise<IRobotState> {
  * @return [Kc, Kp, Kd]
  */
 
-export async function getConstantPIDInclination(): Promise<any> {
+export async function getConstantPIDInclinationArduino(): Promise<any> {
   const estado: any[] = [];
   await BluetoothSerial.write(GET_PID_K_INCLINATION);
   let count = await BluetoothSerial.available();
@@ -86,7 +87,7 @@ export async function getConstantPIDInclination(): Promise<any> {
   return estado;
 }
 
-export async function setConstantPIDInclination(kc: number, ki: number, kd: number) {
+export async function setConstantPIDInclinationArduino(kc: number, ki: number, kd: number) {
   const data: Uint8Array = convertFloat2Uint8Array(new Float32Array([kc, ki, kd]), Uint8Array);
   await BluetoothSerial.write(SET_PID_K_INCLINATION);
   await BluetoothSerial.write(data);
@@ -95,7 +96,7 @@ export async function setConstantPIDInclination(kc: number, ki: number, kd: numb
 /**
  * @return [Kc, Kp, Kd]
  */
-export async function getConstantPIDVelocity(): Promise<any> {
+export async function getConstantPIDVelocityArduino(): Promise<any> {
   const estado: any[] = [];
   await BluetoothSerial.write(GET_PID_K_VELOCITY);
   let count = await BluetoothSerial.available();
@@ -112,13 +113,13 @@ export async function getConstantPIDVelocity(): Promise<any> {
   return estado;
 }
 
-export async function setConstantPIDVelocity(kc: number, ki: number, kd: number) {
+export async function setConstantPIDVelocityArduino(kc: number, ki: number, kd: number) {
   const data: Uint8Array = convertFloat2Uint8Array(new Float32Array([kc, ki, kd]), Uint8Array);
   await BluetoothSerial.write(SET_PID_K_VELOCITY);
   await BluetoothSerial.write(data);
 }
 
-export async function getConstantPIDAngularVelocity(): Promise<any> {
+export async function getConstantPIDAngularVelocityArduino(): Promise<any> {
   const estado: any[] = [];
   await BluetoothSerial.write(GET_PID_K_ANGULAR_VELOCITY);
   let count = await BluetoothSerial.available();
@@ -135,7 +136,7 @@ export async function getConstantPIDAngularVelocity(): Promise<any> {
   return estado;
 }
 
-export async function setConstantPIDAngularVelocity(kc: number, ki: number, kd: number) {
+export async function setConstantPIDAngularVelocityArduino(kc: number, ki: number, kd: number) {
   const data: Uint8Array = convertFloat2Uint8Array(new Float32Array([kc, ki, kd]), Uint8Array);
   await BluetoothSerial.write(SET_PID_K_ANGULAR_VELOCITY);
   await BluetoothSerial.write(data);
@@ -162,6 +163,23 @@ export async function stopRobotPointTracker() {
 
 export async function resetDynamicalState(): Promise<any> {
   await BluetoothSerial.write(RESET_DYNAMICAL_STATE);
+}
+
+export async function getBatteryStatusArduino(): Promise<any> {
+  await BluetoothSerial.write(GET_BATTERY_STATE);
+  let count = await BluetoothSerial.available();
+  while (count < 5) {
+    count = await BluetoothSerial.available();
+  }
+  const data = await BluetoothSerial.readUntil('\n');
+  let battery = 0.0;
+
+  if (data && data !== '' && data.length > 1) {
+    battery = parseFloat(data);
+  }
+
+  await BluetoothSerial.clear();
+  return battery;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////

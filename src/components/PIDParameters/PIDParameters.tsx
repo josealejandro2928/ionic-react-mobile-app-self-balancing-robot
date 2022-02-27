@@ -14,12 +14,12 @@ import { RootState } from '../../store/reducers';
 import './PIDParameters.scss';
 
 import {
-  getConstantPIDAngularVelocity,
-  getConstantPIDVelocity,
-  getConstantPIDInclination,
-  setConstantPIDInclination,
-  setConstantPIDVelocity,
-  setConstantPIDAngularVelocity,
+  getConstantPIDAngularVelocityArduino,
+  getConstantPIDVelocityArduino,
+  getConstantPIDInclinationArduino,
+  setConstantPIDInclinationArduino,
+  setConstantPIDVelocityArduino,
+  setConstantPIDAngularVelocityArduino,
   delayMs,
 } from '../../service/arduino';
 
@@ -48,11 +48,10 @@ const PIDParameters = () => {
   useEffect(() => {
     if (isConnected) {
       getData();
-    }else{
+    } else {
       setEditCtrAngle(false);
       setEditCtrVel(false);
       setEditCtrRot(false);
-
     }
     // present('Your device is not connected, you are not allowed to change the parameters.', 3000);
   }, [isConnected]);
@@ -60,15 +59,15 @@ const PIDParameters = () => {
   ///////////GETTING THE CURRENT PARAMETTERS OF THE CONTROLLERS ////////////////////////////
   async function getData() {
     try {
-      await delayMs(130);
-      const dataAngle = await getConstantPIDInclination();
-      setCtrAngle(dataAngle);
+      await delayMs(1000);
+      const dataAngle = await getConstantPIDInclinationArduino();
+      setCtrAngle(dataAngle || [iKc, iKi, iKd]);
       await delayMs(230);
-      const dataVel = await getConstantPIDVelocity();
-      setCtrVel(dataVel);
+      const dataVel = await getConstantPIDVelocityArduino();
+      setCtrVel(dataVel || [vKc, vKi, vKd]);
       await delayMs(230);
-      const dataRot = await getConstantPIDAngularVelocity();
-      setCtrRot(dataRot);
+      const dataRot = await getConstantPIDAngularVelocityArduino();
+      setCtrRot(dataRot || [rKc, rKi, rKd]);
       await delayMs(500);
       setFirstLoad(false);
     } catch (e) {
@@ -79,7 +78,7 @@ const PIDParameters = () => {
   /////////////////////////////////////////////////////////////////////////////////////////
 
   function pinFormater(value: number) {
-    return value.toFixed(1);
+    return safeToFixed(value, 1);
   }
 
   async function setAngleCtrNewValue(data: any, index: number) {
@@ -88,7 +87,7 @@ const PIDParameters = () => {
     newValue[index] = data.target.value;
     try {
       setCtrAngle([...newValue]);
-      await setConstantPIDInclination(newValue[0], newValue[1], newValue[2]);
+      await setConstantPIDInclinationArduino(newValue[0], newValue[1], newValue[2]);
     } catch (e) {
       present('Error: Something happend sending the PID Inclination Parameters');
     }
@@ -100,7 +99,7 @@ const PIDParameters = () => {
     newValue[index] = data.target.value;
     try {
       setCtrVel([...newValue]);
-      await setConstantPIDVelocity(newValue[0], newValue[1], newValue[2]);
+      await setConstantPIDVelocityArduino(newValue[0], newValue[1], newValue[2]);
     } catch (e) {
       present('Error: Something happend sending the PID Velocity Parameters');
     }
@@ -112,9 +111,17 @@ const PIDParameters = () => {
     newValue[index] = data.target.value;
     try {
       setCtrRot([...newValue]);
-      await setConstantPIDAngularVelocity(newValue[0], newValue[1], newValue[2]);
+      await setConstantPIDAngularVelocityArduino(newValue[0], newValue[1], newValue[2]);
     } catch (e) {
       present('Error: Something happend sending the PID Velocity Parameters');
+    }
+  }
+
+  function safeToFixed(value: any, x: number) {
+    try {
+      return value.toFixed(x);
+    } catch (e) {
+      return 0.0;
     }
   }
 
@@ -143,7 +150,7 @@ const PIDParameters = () => {
             value={ctrAngle[0]}
           >
             <IonLabel slot='start'>Kc:</IonLabel>
-            <IonNote slot='end'>{ctrAngle[0].toFixed(2)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrAngle[0], 2)}</IonNote>
           </IonRange>
         </IonItem>
         <IonItem>
@@ -159,7 +166,7 @@ const PIDParameters = () => {
             value={ctrAngle[1]}
           >
             <IonLabel slot='start'>Ki:</IonLabel>
-            <IonNote slot='end'>{ctrAngle[1].toFixed(2)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrAngle[1], 2)}</IonNote>
           </IonRange>
         </IonItem>
         <IonItem>
@@ -175,7 +182,7 @@ const PIDParameters = () => {
             value={ctrAngle[2]}
           >
             <IonLabel slot='start'>Kd:</IonLabel>
-            <IonNote slot='end'>{ctrAngle[2].toFixed(2)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrAngle[2], 2)}</IonNote>
           </IonRange>
         </IonItem>
 
@@ -202,7 +209,7 @@ const PIDParameters = () => {
             value={ctrVel[0]}
           >
             <IonLabel slot='start'>Kc:</IonLabel>
-            <IonNote slot='end'>{ctrVel[0].toFixed(2)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrVel[0], 2)}</IonNote>
           </IonRange>
         </IonItem>
         <IonItem>
@@ -218,7 +225,7 @@ const PIDParameters = () => {
             value={ctrVel[1]}
           >
             <IonLabel slot='start'>Ki:</IonLabel>
-            <IonNote slot='end'>{ctrVel[1].toFixed(2)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrVel[1], 2)}</IonNote>
           </IonRange>
         </IonItem>
         <IonItem>
@@ -234,7 +241,7 @@ const PIDParameters = () => {
             value={ctrVel[2]}
           >
             <IonLabel slot='start'>Kd:</IonLabel>
-            <IonNote slot='end'>{ctrVel[2].toFixed(3)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrVel[2], 3)}</IonNote>
           </IonRange>
         </IonItem>
 
@@ -261,7 +268,7 @@ const PIDParameters = () => {
             value={ctrRot[0]}
           >
             <IonLabel slot='start'>Kc:</IonLabel>
-            <IonNote slot='end'>{ctrRot[0].toFixed(2)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrRot[0], 2)}</IonNote>
           </IonRange>
         </IonItem>
         <IonItem>
@@ -277,7 +284,7 @@ const PIDParameters = () => {
             value={ctrRot[1]}
           >
             <IonLabel slot='start'>Ki:</IonLabel>
-            <IonNote slot='end'>{ctrRot[1].toFixed(2)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrRot[1], 2)}</IonNote>
           </IonRange>
         </IonItem>
         <IonItem>
@@ -293,7 +300,7 @@ const PIDParameters = () => {
             value={ctrRot[2]}
           >
             <IonLabel slot='start'>Kd:</IonLabel>
-            <IonNote slot='end'>{ctrRot[2].toFixed(3)}</IonNote>
+            <IonNote slot='end'>{safeToFixed(ctrRot[2], 3)}</IonNote>
           </IonRange>
         </IonItem>
       </IonList>

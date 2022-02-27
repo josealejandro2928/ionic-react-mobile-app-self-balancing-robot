@@ -18,3 +18,20 @@ export const getRobotState = () => async (dispatch: Function) => {
     });
   }
 };
+
+export const updateState =
+  (stateUpdate: {
+    linearVelocity?: number;
+    angularVelocity?: number;
+    incliAngle?: number;
+    posX?: number;
+    posY?: number;
+    robotOrien?: number;
+    battery?: number;
+  }) =>
+  async (dispatch: Function) => {
+    dispatch({
+      type: SET_ROBOT_DYNAMIC_STATE,
+      payload: stateUpdate,
+    });
+  };

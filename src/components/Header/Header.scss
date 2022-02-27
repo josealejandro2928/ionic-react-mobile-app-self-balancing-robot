@@ -1,3 +1,11 @@
-.Header{
-    
+.Header {
+    ion-toolbar {
+        .toolbar-content {
+            display: flex !important;
+            justify-content: space-between !important;
+        }
+
+    }
+
+
 }

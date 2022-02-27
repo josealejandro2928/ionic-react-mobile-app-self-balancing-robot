@@ -23,7 +23,7 @@ const initialState: IRobotState = {
   posX: 0.0,
   posY: 0.0,
   robotOrien: 0.0,
-  battery: 0.0,
+  battery: 90.0,
 };
 
 const robotReducer = (

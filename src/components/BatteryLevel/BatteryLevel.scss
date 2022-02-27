@@ -1,0 +1,12 @@
+.BatteryLevel{
+  min-width: 54px;
+  box-sizing: border-box;
+  padding: 0px 8px;
+  display: flex;
+  .label{
+    font-size: 16px;
+    margin-right: 4px;
+    margin-top: 3px;
+  }
+
+}
