@@ -15,15 +15,15 @@ import {
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Joystick from '../components/Joystick/Joystick';
-import { setRobotSetPointSpeeds } from '../services/arduino';
+import { delayMs, setRobotSetPointSpeeds } from '../services/arduino';
 import { RootState } from '../store/reducers';
 import './Tab1.scss';
 
 const Tab1: React.FC = () => {
   const { isConnected } = useSelector((state: RootState) => state.bluetooth);
   const [editVel, setEditVel] = useState(false);
-  const [maxVelY, setMaxVelY] = useState(0); // m/s
-  const [maxVelX, setMaxVelX] = useState(0); // rad/s
+  const [maxVelY, setMaxVelY] = useState(0.4); // m/s
+  const [maxVelX, setMaxVelX] = useState(3); // rad/s
 
   async function onSetVelToArduino(velX: number, velY: number) {
     if (!isConnected) return;
@@ -31,11 +31,6 @@ const Tab1: React.FC = () => {
       await setRobotSetPointSpeeds(velY, velX);
     } catch (e) {}
   }
-
-  useEffect(() => {
-    setMaxVelX(3);
-    setMaxVelY(0.45);
-  }, []);
 
   return (
     <IonPage>

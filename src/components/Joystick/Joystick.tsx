@@ -1,6 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from 'react';
 import JoyStick from '../../services/joy';
 import { Vibration } from '@awesome-cordova-plugins/vibration';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/reducers';
 
 const Joystick = ({
   maxVel = 0.45,
@@ -17,13 +20,14 @@ const Joystick = ({
 }) => {
   const joyRef = useRef<any>();
   const vector = useRef<Array<number>>([0, 0]);
-  const Max_OUTPUT_JOYSTICK = 85;
+  const Max_OUTPUT_JOYSTICK = 100;
+  const { isConnected } = useSelector((state: RootState) => state.bluetooth);
 
   useEffect(() => {
     if (joyRef.current) return;
     joyRef.current = new JoyStick('joyDiv', {
-      width: 217,
-      height: 217,
+      width: 200,
+      height: 200,
       internalFillColor: '#3880ff',
       externalStrokeColor: '#3880ff',
       externalLineWidth: 3,
@@ -42,7 +46,7 @@ const Joystick = ({
     return () => {
       clearInterval(time);
     };
-  }, [joyRef.current, maxVel, maxRot]);
+  }, [joyRef.current, maxVel, maxRot, isConnected]);
 
   function samplingData() {
     const [x, y] = joyRef?.current.GetMotion();
