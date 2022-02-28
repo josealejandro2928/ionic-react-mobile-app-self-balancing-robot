@@ -21,7 +21,7 @@ import {
   setConstantPIDVelocityArduino,
   setConstantPIDAngularVelocityArduino,
   delayMs,
-} from '../../service/arduino';
+} from '../../services/arduino';
 
 const PIDParameters = () => {
   const iKc = 23.75;

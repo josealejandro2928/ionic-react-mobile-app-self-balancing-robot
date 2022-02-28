@@ -2,7 +2,7 @@ import { IonIcon, IonLabel, useIonToast } from '@ionic/react';
 import { batteryFullOutline, batteryHalfOutline, batteryDeadOutline } from 'ionicons/icons';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBatteryStatusArduino } from '../../service/arduino';
+import { getBatteryStatusArduino } from '../../services/arduino';
 import { updateState } from '../../store/actions/robot.actions';
 import { RootState } from '../../store/reducers';
 import './BatteryLevel.scss';
