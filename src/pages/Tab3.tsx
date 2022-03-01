@@ -5,7 +5,11 @@ import {
   IonButton,
   IonContent,
   IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
   IonPage,
+  IonToggle,
   IonToolbar,
   useIonModal,
   useIonToast,
@@ -28,6 +32,8 @@ import {
   Legend,
 } from 'chart.js';
 import ShowState from '../components/ShowState/ShowState';
+import './Tab3.scss';
+import { resetDynamicalStateArduino } from '../services/arduino';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -42,14 +48,13 @@ const Tab3: React.FC = () => {
   const [samplingParams, setSamplingParams] = useState<{
     sampleTime: number;
     variables: Array<string>;
-    showChart: boolean;
-    showTable: boolean;
+    dataDisplayed: string;
   } | null>();
 
   const [startSampling, setStartSampling] = useState<boolean>(false);
   const timeIntervalHandler = useRef<any | null>();
-
   let timerPointer = useRef<number>(0);
+  const [showData, setShowData] = useState<boolean>(true);
 
   const [presentModal, dismissModal] = useIonModal(SamplingDataForm, {
     data: samplingParams,
@@ -120,13 +125,20 @@ const Tab3: React.FC = () => {
     }
   }
 
+  async function onResetStateArduino() {
+    try {
+      await resetDynamicalStateArduino();
+      dispatch(updateState({ posX: 0, posY: 0, robotOrien: 0 }));
+    } catch (e) {}
+  }
+
   return (
-    <IonPage>
+    <IonPage className='Tab3'>
       <IonContent fullscreen>
         <IonHeader>
           <IonToolbar></IonToolbar>
         </IonHeader>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0px' }}>
           {!startSampling && (
             <IonButton onClick={() => presentModal()} style={{ margin: '8px', width: '80%' }}>
               start sampling
@@ -142,25 +154,54 @@ const Tab3: React.FC = () => {
             </IonButton>
           )}
         </div>
+        <IonList>
+          <IonItem>
+            <IonLabel>show data</IonLabel>
+            <IonToggle
+              slot='end'
+              checked={showData}
+              onIonChange={(e: any) => setShowData(e.detail.checked)}
+            />
+          </IonItem>
+        </IonList>
         {/* ///////////////////////////////GRAFICAS //////////////////////////////////////// */}
+        {showData && (
+          <>
+            {samplingParams?.dataDisplayed === 'chart' && (
+              <>
+                {samplingParams?.variables?.map((value: string) => {
+                  const { name, color, x, y }: any = getDataToPlotFromSettings(value);
+                  let labelX = value === 'position' ? (x || 0.0).toFixed(2) : '';
+                  return (
+                    <ChartVariable
+                      key={value}
+                      name={name}
+                      color={color}
+                      x={x}
+                      y={y}
+                      labelX={labelX}
+                    />
+                  );
+                })}
+              </>
+            )}
+            {samplingParams?.dataDisplayed === 'table' && (
+              <>
+                <br />
+                <ShowState variables={samplingParams?.variables} />
+              </>
+            )}
+          </>
+        )}
 
-        {samplingParams?.showChart && (
-          <>
-            {samplingParams?.variables?.map((value: string) => {
-              const { name, color, x, y }: any = getDataToPlotFromSettings(value);
-              let labelX = value === 'position' ? (x || 0.0).toFixed(2) : '';
-              return (
-                <ChartVariable key={value} name={name} color={color} x={x} y={y} labelX={labelX} />
-              );
-            })}
-          </>
-        )}
-        {samplingParams?.showTable && (
-          <>
-            <br />
-            <ShowState variables={samplingParams?.variables} />
-          </>
-        )}
+        <IonList style={{ marginTop: '1px' }}>
+          <IonItem disabled={!isConnected}>
+            <IonLabel>Actions:</IonLabel>
+            <IonLabel slot='end'>
+              <IonButton onClick={onResetStateArduino}>Reset state</IonButton>
+            </IonLabel>
+          </IonItem>
+        </IonList>
       </IonContent>
     </IonPage>
   );

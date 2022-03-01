@@ -166,7 +166,7 @@ export async function stopRobotPointTracker() {
   await BluetoothSerial.write(STOP_POINT_TRACKER_MODE);
 }
 
-export async function resetDynamicalState(): Promise<any> {
+export async function resetDynamicalStateArduino(): Promise<any> {
   await BluetoothSerial.write(RESET_DYNAMICAL_STATE);
 }
 

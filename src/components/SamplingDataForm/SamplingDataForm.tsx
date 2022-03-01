@@ -1,14 +1,4 @@
-import {
-  IonButton,
-  IonContent,
-  IonItem,
-  IonItemDivider,
-  IonLabel,
-  IonList,
-  IonSelect,
-  IonSelectOption,
-  IonToolbar,
-} from '@ionic/react';
+import { IonButton, IonContent, IonItem, IonItemDivider, IonList, IonToolbar } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import SelectOption from '../SelectOption/SelectOption';
 import './SamplingDataForm.scss';
@@ -22,13 +12,12 @@ const SamplingDataForm = ({
 }) => {
   const [timing, setTiming] = useState<number>(data?.sampleTime || 100);
   const [variables, setVariables] = useState<string[]>(data?.variables || ['incliAngle']);
-  const [showChart, setShowChart] = useState<boolean>(data?.showChart || false);
-  const [showTable, setShowTable] = useState<boolean>(data?.showTable || false);
+  const [dataDisplayed, setDataDisplayed] = useState<boolean>(data?.dataDisplayed || 'chart');
 
   useEffect(() => {}, []);
 
   function onSaveData() {
-    onDismiss({ sampleTime: timing, variables, showChart, showTable });
+    onDismiss({ sampleTime: timing, variables, dataDisplayed });
   }
 
   return (
@@ -76,26 +65,13 @@ const SamplingDataForm = ({
           ></SelectOption>
 
           <SelectOption
-            value={showChart}
-            disabled={showTable === true}
-            selectionChange={setShowChart}
-            placeHolder='Show chart'
-            header='Show chart'
+            value={dataDisplayed}
+            selectionChange={setDataDisplayed}
+            placeHolder='Data displayed as'
+            header='Data displayed as'
             selectables={[
-              { value: true, label: 'Yes' },
-              { value: false, label: 'No' },
-            ]}
-          ></SelectOption>
-
-          <SelectOption
-            value={showTable}
-            disabled={showChart === true}
-            selectionChange={setShowTable}
-            placeHolder='Show table'
-            header='Show table'
-            selectables={[
-              { value: true, label: 'Yes' },
-              { value: false, label: 'No' },
+              { value: 'chart', label: 'Chart' },
+              { value: 'table', label: 'Table' },
             ]}
           ></SelectOption>
 
@@ -115,16 +91,8 @@ const SamplingDataForm = ({
             </span>
           </IonItem>
           <IonItem>
-            Show chart:
-            <span style={{ marginLeft: '8px', fontStyle: 'italic' }}>
-              {showChart ? 'Yes' : 'No'}
-            </span>
-          </IonItem>
-          <IonItem>
-            Show table:
-            <span style={{ marginLeft: '8px', fontStyle: 'italic' }}>
-              {showTable ? 'Yes' : 'No'}
-            </span>
+            Show data as:
+            <span style={{ marginLeft: '8px', fontStyle: 'italic' }}>{dataDisplayed}</span>
           </IonItem>
         </IonList>
         <p style={{ textAlign: 'center' }}>
