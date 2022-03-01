@@ -89,14 +89,14 @@ const Tab3: React.FC = () => {
     switch (variable) {
       case 'incliAngle':
         return {
-          name: 'Inclination angle[deg] vs t[s]',
+          name: 'Inclination[deg] vs t[s]',
           color: '#1976d2',
           x: timerPointer.current,
           y: (globalRobotState as any)[variable],
         };
       case 'linearVelocity':
         return {
-          name: 'Velocity angle[m/s] vs t[s]',
+          name: 'Velocity[m/s] vs t[s]',
           color: '#d32f2f',
           x: timerPointer.current,
           y: (globalRobotState as any)[variable],
