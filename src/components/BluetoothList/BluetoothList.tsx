@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IonButton, IonCheckbox, IonItem, IonLabel, IonList, useIonToast } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +12,6 @@ import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial';
 import { IBluetooth } from '../../store/reducers/bluetooth.reducer';
 import './BluetoothList.scss';
 import { SpinnerDialog } from '@awesome-cordova-plugins/spinner-dialog';
-import ShowState from './../ShowState/ShowState';
 import { Subscription } from 'rxjs';
 
 const BluetoothList: React.FC = () => {

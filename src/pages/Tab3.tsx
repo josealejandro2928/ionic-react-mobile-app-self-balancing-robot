@@ -1,19 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './Tab3.scss';
 
 import {
-  IonAlert,
   IonButton,
   IonContent,
   IonHeader,
   IonPage,
   IonToolbar,
   useIonModal,
+  useIonToast,
 } from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 
 import SamplingDataForm from '../components/SamplingDataForm/SamplingDataForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateState } from '../store/actions/robot.actions';
+import { updateState, getRobotState } from '../store/actions/robot.actions';
 import { RootState } from '../store/reducers';
 import ChartVariable from '../components/ChartVariable/ChartVariable';
 import {
@@ -27,13 +28,14 @@ import {
   Legend,
 } from 'chart.js';
 import ShowState from '../components/ShowState/ShowState';
-import SelectOption from '../components/SelectOption/SelectOption';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const Tab3: React.FC = () => {
   const dispatch = useDispatch();
   const globalRobotState = useSelector((state: RootState) => state.robot);
+  const { isConnected } = useSelector((state: RootState) => state.bluetooth);
+  const [presentToast] = useIonToast();
 
   useEffect(() => {}, []);
 
@@ -69,20 +71,20 @@ const Tab3: React.FC = () => {
   }
 
   useEffect(() => {
-    if (!startSampling) {
+    if (!isConnected) {
+      presentToast('You must to be connected to the robot', 2000);
+    }
+    if (!startSampling || !isConnected) {
       clearInterval(timeIntervalHandler.current);
       timerPointer.current = 0;
       return;
     }
     timeIntervalHandler.current = setInterval(gettingDataState, samplingParams?.sampleTime);
-  }, [startSampling]);
+  }, [startSampling, isConnected]);
 
   async function gettingDataState() {
     timerPointer.current += (samplingParams?.sampleTime as number) / 1000;
-    const inclination = 10 * Math.sin(2 * 3.14159 * timerPointer.current);
-    const x = Math.random() * 5;
-    const y = -3.5 * x + 2;
-    dispatch(updateState({ incliAngle: inclination, posX: x, posY: y }));
+    dispatch(getRobotState());
   }
 
   function getDataToPlotFromSettings(variable: string) {

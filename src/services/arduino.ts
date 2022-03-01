@@ -43,10 +43,15 @@ export async function delayMs(ms = 0) {
 }
 
 /////////////////////////// INTERFACE TO CONNECT TO ARDUINO ////////////////////////
-export async function arduinoGetRobotState(): Promise<IRobotState> {
+export async function getRobotStateArduino(): Promise<IRobotState> {
   const AMOUNT_DATA_BLUETOOTH_STATE = 7;
-  await BluetoothSerial.write(COMMAND_GETSTATE);
   let state: number[] = [];
+  await BluetoothSerial.write(COMMAND_GETSTATE);
+  let count = await BluetoothSerial.available();
+  // 7x4 + 7x1 + 1
+  while (count < 35) {
+    count = await BluetoothSerial.available();
+  }
   for (let i = 0; i < AMOUNT_DATA_BLUETOOTH_STATE; i++) {
     let data: string = await BluetoothSerial.readUntil('\n');
     if (data && data !== '' && data.length > 1) {
