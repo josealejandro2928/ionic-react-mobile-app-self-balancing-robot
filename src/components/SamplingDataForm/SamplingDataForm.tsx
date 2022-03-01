@@ -10,6 +10,7 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
+import SelectOption from '../SelectOption/SelectOption';
 import './SamplingDataForm.scss';
 
 const SamplingDataForm = ({
@@ -47,73 +48,63 @@ const SamplingDataForm = ({
       <div className='SamplingDataForm'>
         <IonList>
           <IonItemDivider>Parameters</IonItemDivider>
-          <IonItem>
-            <IonLabel>Timing</IonLabel>
-            <IonSelect
-              value={timing}
-              cancelText='Cancel'
-              okText='Ok'
-              onIonChange={(e) => setTiming(e.detail.value)}
-            >
-              <IonSelectOption value={75}>75 ms</IonSelectOption>
-              <IonSelectOption value={100}>100 ms</IonSelectOption>
-              <IonSelectOption value={150}>150 ms</IonSelectOption>
-              <IonSelectOption value={200}>200 ms</IonSelectOption>
-            </IonSelect>
-          </IonItem>
+          <SelectOption
+            value={timing}
+            selectionChange={setTiming}
+            placeHolder='Timing'
+            header='Timing'
+            selectables={[
+              { value: 75, label: '75 ms' },
+              { value: 100, label: '100 ms' },
+              { value: 150, label: '150 ms' },
+              { value: 200, label: '200 ms' },
+            ]}
+          />
 
-          <IonItem>
-            <IonLabel>Variables</IonLabel>
-            <IonSelect
-              value={variables}
-              multiple={true}
-              cancelText='Cancel'
-              okText='Ok'
-              onIonChange={(e) => setVariables(e.detail.value)}
-            >
-              <IonSelectOption value='incliAngle'>Inclination</IonSelectOption>
-              <IonSelectOption value='linearVelocity'>Linear Vel.</IonSelectOption>
-              <IonSelectOption value='angularVelocity'>Angular Vel.</IonSelectOption>
-              <IonSelectOption value='position'>Position.</IonSelectOption>
-            </IonSelect>
-          </IonItem>
+          <SelectOption
+            value={variables}
+            multiple
+            selectionChange={setVariables}
+            placeHolder='Variables'
+            header='Variables'
+            selectables={[
+              { value: 'incliAngle', label: 'Inclination' },
+              { value: 'linearVelocity', label: 'Linear Vel.' },
+              { value: 'angularVelocity', label: 'Angular Vel.' },
+              { value: 'position', label: 'Position.' },
+            ]}
+          ></SelectOption>
 
-          <IonItem>
-            <IonLabel>Show chart</IonLabel>
-            <IonSelect
-              disabled={showTable === true}
-              interface='popover'
-              value={showChart}
-              cancelText='Cancel'
-              okText='Ok'
-              onIonChange={(e) => setShowChart(e.detail.value)}
-            >
-              <IonSelectOption value={true}>Yes</IonSelectOption>
-              <IonSelectOption value={false}>No</IonSelectOption>
-            </IonSelect>
-          </IonItem>
+          <SelectOption
+            value={showChart}
+            disabled={showTable === true}
+            selectionChange={setShowChart}
+            placeHolder='Show chart'
+            header='Show chart'
+            selectables={[
+              { value: true, label: 'Yes' },
+              { value: false, label: 'No' },
+            ]}
+          ></SelectOption>
 
-          <IonItem>
-            <IonLabel>Show table</IonLabel>
-            <IonSelect
-              disabled={showChart === true}
-              interface='popover'
-              value={showTable}
-              cancelText='Cancel'
-              okText='Ok'
-              onIonChange={(e) => setShowTable(e.detail.value)}
-            >
-              <IonSelectOption value={true}>Yes</IonSelectOption>
-              <IonSelectOption value={false}>No</IonSelectOption>
-            </IonSelect>
-          </IonItem>
+          <SelectOption
+            value={showTable}
+            disabled={showChart === true}
+            selectionChange={setShowTable}
+            placeHolder='Show table'
+            header='Show table'
+            selectables={[
+              { value: true, label: 'Yes' },
+              { value: false, label: 'No' },
+            ]}
+          ></SelectOption>
 
           <IonItemDivider>Your Selections</IonItemDivider>
           <IonItem>
             Variables:
             <span style={{ marginLeft: '8px', fontStyle: 'italic' }}>
-              {variables.length
-                ? variables.reduce((curr, prev) => prev + ', ' + curr, '')
+              {variables?.length
+                ? variables?.reduce((curr, prev) => prev + ', ' + curr, '')
                 : '(none selected)'}
             </span>
           </IonItem>

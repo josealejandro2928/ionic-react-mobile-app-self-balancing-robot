@@ -42,7 +42,7 @@ const ChartVariable = ({
         backgroundColor: color,
         borderColor: color,
         borderWidth: 1.5,
-        fill: false,
+        fill: true,
         cubicInterpolationMode: 'monotone',
       },
     ],

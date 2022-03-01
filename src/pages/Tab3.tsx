@@ -1,6 +1,14 @@
 import './Tab3.scss';
 
-import { IonButton, IonContent, IonHeader, IonPage, IonToolbar, useIonModal } from '@ionic/react';
+import {
+  IonAlert,
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonToolbar,
+  useIonModal,
+} from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
 
 import SamplingDataForm from '../components/SamplingDataForm/SamplingDataForm';
@@ -19,6 +27,7 @@ import {
   Legend,
 } from 'chart.js';
 import ShowState from '../components/ShowState/ShowState';
+import SelectOption from '../components/SelectOption/SelectOption';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -137,7 +146,7 @@ const Tab3: React.FC = () => {
           <>
             {samplingParams?.variables?.map((value: string) => {
               const { name, color, x, y }: any = getDataToPlotFromSettings(value);
-              let labelX = value == 'position' ? (x || 0.0).toFixed(2) : '';
+              let labelX = value === 'position' ? (x || 0.0).toFixed(2) : '';
               return (
                 <ChartVariable key={value} name={name} color={color} x={x} y={y} labelX={labelX} />
               );
