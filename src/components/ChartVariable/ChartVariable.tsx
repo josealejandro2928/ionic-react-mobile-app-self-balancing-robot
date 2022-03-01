@@ -6,46 +6,44 @@ const ChartVariable = ({
   name = '',
   labelY = '',
   labelX = '',
+  color = '',
   x = 0,
   y = 0,
 }: {
   name: string;
   labelY?: string;
   labelX?: string;
+  color?: string;
   x: number;
   y: number;
 }) => {
   const options = useRef<any>({
     responsive: true,
-    type: 'line',
     maintainAspectRatio: true,
+    type: 'line',
+    animation: {
+      duration: 350,
+    },
     elements: {
       point: {
         radius: 0,
       },
     },
-    plugins: {
-      title: {
-        display: false,
-        text: 'Chart.js Line Chart',
-      },
-    },
-    scales: {
-      // y: {
-      //   suggestedMin:-15,
-      //   suggestedMax: 15,
-      // },
-    },
+    plugins: {},
+    scales: {},
   });
 
   const data = useRef<any>({
     labels: [],
     datasets: [
       {
-        label: 'Inclination',
+        label: name,
         data: [],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        borderColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: color,
+        borderColor: color,
+        borderWidth: 1.5,
+        fill: false,
+        cubicInterpolationMode: 'monotone',
       },
     ],
   });
@@ -59,7 +57,7 @@ const ChartVariable = ({
       data.current.labels.shift();
       data.current.datasets[0].data.shift();
     }
-    data.current.labels.push('');
+    data.current.labels.push(labelX);
     data.current.datasets[0].data.push(y);
 
     charRer.current.update();
@@ -67,7 +65,7 @@ const ChartVariable = ({
 
   return (
     <div className='ChartVariable'>
-      <Line ref={charRer} options={options.current} data={data.current} />;
+      <Line ref={charRer} options={options.current} data={data.current} />
     </div>
   );
 };

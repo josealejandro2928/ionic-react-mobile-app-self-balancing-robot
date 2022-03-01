@@ -5,12 +5,9 @@ import {
   IonItemDivider,
   IonLabel,
   IonList,
-  IonListHeader,
-  IonModal,
   IonSelect,
   IonSelectOption,
   IonToolbar,
-  useIonModal,
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import './SamplingDataForm.scss';
@@ -24,13 +21,13 @@ const SamplingDataForm = ({
 }) => {
   const [timing, setTiming] = useState<number>(data?.sampleTime || 100);
   const [variables, setVariables] = useState<string[]>(data?.variables || ['incliAngle']);
+  const [showChart, setShowChart] = useState<boolean>(data?.showChart || false);
+  const [showTable, setShowTable] = useState<boolean>(data?.showTable || false);
 
-  useEffect(() => {
-    console.log('Enter here');
-  }, []);
+  useEffect(() => {}, []);
 
   function onSaveData() {
-    onDismiss({ sampleTime: timing, variables });
+    onDismiss({ sampleTime: timing, variables, showChart, showTable });
   }
 
   return (
@@ -76,6 +73,38 @@ const SamplingDataForm = ({
             >
               <IonSelectOption value='incliAngle'>Inclination</IonSelectOption>
               <IonSelectOption value='linearVelocity'>Linear Vel.</IonSelectOption>
+              <IonSelectOption value='angularVelocity'>Angular Vel.</IonSelectOption>
+              <IonSelectOption value='position'>Position.</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+
+          <IonItem>
+            <IonLabel>Show chart</IonLabel>
+            <IonSelect
+              disabled={showTable === true}
+              interface='popover'
+              value={showChart}
+              cancelText='Cancel'
+              okText='Ok'
+              onIonChange={(e) => setShowChart(e.detail.value)}
+            >
+              <IonSelectOption value={true}>Yes</IonSelectOption>
+              <IonSelectOption value={false}>No</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+
+          <IonItem>
+            <IonLabel>Show table</IonLabel>
+            <IonSelect
+              disabled={showChart === true}
+              interface='popover'
+              value={showTable}
+              cancelText='Cancel'
+              okText='Ok'
+              onIonChange={(e) => setShowTable(e.detail.value)}
+            >
+              <IonSelectOption value={true}>Yes</IonSelectOption>
+              <IonSelectOption value={false}>No</IonSelectOption>
             </IonSelect>
           </IonItem>
 
@@ -92,6 +121,18 @@ const SamplingDataForm = ({
             Sampling:
             <span style={{ marginLeft: '8px', fontStyle: 'italic' }}>
               {timing ? timing + ' ms' : '(none selected)'}
+            </span>
+          </IonItem>
+          <IonItem>
+            Show chart:
+            <span style={{ marginLeft: '8px', fontStyle: 'italic' }}>
+              {showChart ? 'Yes' : 'No'}
+            </span>
+          </IonItem>
+          <IonItem>
+            Show table:
+            <span style={{ marginLeft: '8px', fontStyle: 'italic' }}>
+              {showTable ? 'Yes' : 'No'}
             </span>
           </IonItem>
         </IonList>

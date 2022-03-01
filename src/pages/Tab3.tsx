@@ -18,6 +18,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import ShowState from '../components/ShowState/ShowState';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -30,6 +31,8 @@ const Tab3: React.FC = () => {
   const [samplingParams, setSamplingParams] = useState<{
     sampleTime: number;
     variables: Array<string>;
+    showChart: boolean;
+    showTable: boolean;
   } | null>();
 
   const [startSampling, setStartSampling] = useState<boolean>(false);
@@ -46,12 +49,14 @@ const Tab3: React.FC = () => {
     if (data) {
       setSamplingParams(data);
       setStartSampling(true);
+      dispatch(updateState({ startSampling: true }));
     }
     dismissModal();
   }
 
   function onStopSampling() {
     setStartSampling(false);
+    dispatch(updateState({ startSampling: false }));
   }
 
   useEffect(() => {
@@ -65,8 +70,43 @@ const Tab3: React.FC = () => {
 
   async function gettingDataState() {
     timerPointer.current += (samplingParams?.sampleTime as number) / 1000;
-    const inclination = 10*Math.sin(2 * 3.14159 * timerPointer.current);
-    dispatch(updateState({ incliAngle: inclination }));
+    const inclination = 10 * Math.sin(2 * 3.14159 * timerPointer.current);
+    const x = Math.random() * 5;
+    const y = -3.5 * x + 2;
+    dispatch(updateState({ incliAngle: inclination, posX: x, posY: y }));
+  }
+
+  function getDataToPlotFromSettings(variable: string) {
+    switch (variable) {
+      case 'incliAngle':
+        return {
+          name: 'Inclination angle[deg] vs t[s]',
+          color: '#1976d2',
+          x: timerPointer.current,
+          y: (globalRobotState as any)[variable],
+        };
+      case 'linearVelocity':
+        return {
+          name: 'Velocity angle[m/s] vs t[s]',
+          color: '#d32f2f',
+          x: timerPointer.current,
+          y: (globalRobotState as any)[variable],
+        };
+      case 'angularVelocity':
+        return {
+          name: 'Angular vel.[rad/s] vs t[s]',
+          color: '#fb8c00',
+          x: timerPointer.current,
+          y: (globalRobotState as any)[variable],
+        };
+      case 'position':
+        return {
+          name: 'PosY[m] vs PosX[m] ',
+          color: '#388e3c',
+          x: globalRobotState.posX,
+          y: globalRobotState.posY,
+        };
+    }
   }
 
   return (
@@ -93,16 +133,22 @@ const Tab3: React.FC = () => {
         </div>
         {/* ///////////////////////////////GRAFICAS //////////////////////////////////////// */}
 
-        {startSampling && (
-          <section style={{ boxSizing: 'border-box', padding: '2px' }}>
-            {
-              <ChartVariable
-                name='Inclination'
-                x={timerPointer.current}
-                y={globalRobotState.incliAngle}
-              />
-            }
-          </section>
+        {samplingParams?.showChart && (
+          <>
+            {samplingParams?.variables?.map((value: string) => {
+              const { name, color, x, y }: any = getDataToPlotFromSettings(value);
+              let labelX = value == 'position' ? (x || 0.0).toFixed(2) : '';
+              return (
+                <ChartVariable key={value} name={name} color={color} x={x} y={y} labelX={labelX} />
+              );
+            })}
+          </>
+        )}
+        {samplingParams?.showTable && (
+          <>
+            <br />
+            <ShowState variables={samplingParams?.variables} />
+          </>
         )}
       </IonContent>
     </IonPage>

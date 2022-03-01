@@ -137,54 +137,58 @@ const PIDParameters = () => {
             disabled={!isConnected}
           />
         </IonItemDivider>
-        <IonItem>
-          <IonRange
-            disabled={!editCtrAngle}
-            debounce={200}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setAngleCtrNewValue(e, 0)}
-            pin
-            min={0}
-            max={50}
-            step={0.1}
-            value={ctrAngle[0]}
-          >
-            <IonLabel slot='start'>Kc:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrAngle[0], 2)}</IonNote>
-          </IonRange>
-        </IonItem>
-        <IonItem>
-          <IonRange
-            disabled={!editCtrAngle}
-            debounce={200}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setAngleCtrNewValue(e, 1)}
-            pin
-            min={0}
-            max={50}
-            step={0.05}
-            value={ctrAngle[1]}
-          >
-            <IonLabel slot='start'>Ki:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrAngle[1], 2)}</IonNote>
-          </IonRange>
-        </IonItem>
-        <IonItem>
-          <IonRange
-            disabled={!editCtrAngle}
-            debounce={150}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setAngleCtrNewValue(e, 2)}
-            pin
-            min={-5}
-            max={10}
-            step={0.05}
-            value={ctrAngle[2]}
-          >
-            <IonLabel slot='start'>Kd:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrAngle[2], 2)}</IonNote>
-          </IonRange>
-        </IonItem>
+        {editCtrAngle && (
+          <>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrAngle}
+                debounce={200}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setAngleCtrNewValue(e, 0)}
+                pin
+                min={0}
+                max={50}
+                step={0.1}
+                value={ctrAngle[0]}
+              >
+                <IonLabel slot='start'>Kc:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrAngle[0], 2)}</IonNote>
+              </IonRange>
+            </IonItem>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrAngle}
+                debounce={200}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setAngleCtrNewValue(e, 1)}
+                pin
+                min={0}
+                max={50}
+                step={0.05}
+                value={ctrAngle[1]}
+              >
+                <IonLabel slot='start'>Ki:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrAngle[1], 2)}</IonNote>
+              </IonRange>
+            </IonItem>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrAngle}
+                debounce={150}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setAngleCtrNewValue(e, 2)}
+                pin
+                min={-5}
+                max={10}
+                step={0.05}
+                value={ctrAngle[2]}
+              >
+                <IonLabel slot='start'>Kd:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrAngle[2], 2)}</IonNote>
+              </IonRange>
+            </IonItem>
+          </>
+        )}
 
         <IonItemDivider>
           <IonLabel>Velocity PID Controller</IonLabel>
@@ -196,54 +200,58 @@ const PIDParameters = () => {
           />
         </IonItemDivider>
 
-        <IonItem>
-          <IonRange
-            disabled={!editCtrVel}
-            debounce={200}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setVelCtrNewValue(e, 0)}
-            pin
-            min={0}
-            max={25}
-            step={0.05}
-            value={ctrVel[0]}
-          >
-            <IonLabel slot='start'>Kc:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrVel[0], 2)}</IonNote>
-          </IonRange>
-        </IonItem>
-        <IonItem>
-          <IonRange
-            disabled={!editCtrVel}
-            debounce={200}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setVelCtrNewValue(e, 1)}
-            pin
-            min={0}
-            max={25}
-            step={0.05}
-            value={ctrVel[1]}
-          >
-            <IonLabel slot='start'>Ki:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrVel[1], 2)}</IonNote>
-          </IonRange>
-        </IonItem>
-        <IonItem>
-          <IonRange
-            disabled={!editCtrVel}
-            debounce={100}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setVelCtrNewValue(e, 2)}
-            pin
-            min={-5}
-            max={5}
-            step={0.005}
-            value={ctrVel[2]}
-          >
-            <IonLabel slot='start'>Kd:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrVel[2], 3)}</IonNote>
-          </IonRange>
-        </IonItem>
+        {editCtrVel && (
+          <>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrVel}
+                debounce={200}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setVelCtrNewValue(e, 0)}
+                pin
+                min={0}
+                max={25}
+                step={0.05}
+                value={ctrVel[0]}
+              >
+                <IonLabel slot='start'>Kc:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrVel[0], 2)}</IonNote>
+              </IonRange>
+            </IonItem>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrVel}
+                debounce={200}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setVelCtrNewValue(e, 1)}
+                pin
+                min={0}
+                max={25}
+                step={0.05}
+                value={ctrVel[1]}
+              >
+                <IonLabel slot='start'>Ki:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrVel[1], 2)}</IonNote>
+              </IonRange>
+            </IonItem>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrVel}
+                debounce={100}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setVelCtrNewValue(e, 2)}
+                pin
+                min={-5}
+                max={5}
+                step={0.005}
+                value={ctrVel[2]}
+              >
+                <IonLabel slot='start'>Kd:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrVel[2], 3)}</IonNote>
+              </IonRange>
+            </IonItem>
+          </>
+        )}
 
         <IonItemDivider>
           <IonLabel>Rotation PID Controller</IonLabel>
@@ -255,54 +263,58 @@ const PIDParameters = () => {
           />
         </IonItemDivider>
 
-        <IonItem>
-          <IonRange
-            disabled={!editCtrRot}
-            debounce={250}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setRotCtrNewValue(e, 0)}
-            pin
-            min={0}
-            max={25}
-            step={0.1}
-            value={ctrRot[0]}
-          >
-            <IonLabel slot='start'>Kc:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrRot[0], 2)}</IonNote>
-          </IonRange>
-        </IonItem>
-        <IonItem>
-          <IonRange
-            disabled={!editCtrRot}
-            debounce={250}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setRotCtrNewValue(e, 1)}
-            pin
-            min={0}
-            max={25}
-            step={0.1}
-            value={ctrRot[1]}
-          >
-            <IonLabel slot='start'>Ki:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrRot[1], 2)}</IonNote>
-          </IonRange>
-        </IonItem>
-        <IonItem>
-          <IonRange
-            disabled={!editCtrRot}
-            debounce={100}
-            pinFormatter={pinFormater}
-            onIonChange={(e) => setRotCtrNewValue(e, 2)}
-            pin
-            min={-5}
-            max={5}
-            step={0.005}
-            value={ctrRot[2]}
-          >
-            <IonLabel slot='start'>Kd:</IonLabel>
-            <IonNote slot='end'>{safeToFixed(ctrRot[2], 3)}</IonNote>
-          </IonRange>
-        </IonItem>
+        {editCtrRot && (
+          <>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrRot}
+                debounce={250}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setRotCtrNewValue(e, 0)}
+                pin
+                min={0}
+                max={25}
+                step={0.1}
+                value={ctrRot[0]}
+              >
+                <IonLabel slot='start'>Kc:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrRot[0], 2)}</IonNote>
+              </IonRange>
+            </IonItem>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrRot}
+                debounce={250}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setRotCtrNewValue(e, 1)}
+                pin
+                min={0}
+                max={25}
+                step={0.1}
+                value={ctrRot[1]}
+              >
+                <IonLabel slot='start'>Ki:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrRot[1], 2)}</IonNote>
+              </IonRange>
+            </IonItem>
+            <IonItem>
+              <IonRange
+                disabled={!editCtrRot}
+                debounce={100}
+                pinFormatter={pinFormater}
+                onIonChange={(e) => setRotCtrNewValue(e, 2)}
+                pin
+                min={-5}
+                max={5}
+                step={0.005}
+                value={ctrRot[2]}
+              >
+                <IonLabel slot='start'>Kd:</IonLabel>
+                <IonNote slot='end'>{safeToFixed(ctrRot[2], 3)}</IonNote>
+              </IonRange>
+            </IonItem>
+          </>
+        )}
       </IonList>
     </div>
   );

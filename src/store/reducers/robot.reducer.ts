@@ -7,6 +7,7 @@ export interface IRobotState {
   posY: number;
   robotOrien: number;
   battery: number;
+  startSampling?: boolean;
 }
 /////////////////////////////////////////////////////////////////
 
@@ -24,6 +25,7 @@ const initialState: IRobotState = {
   posY: 0.0,
   robotOrien: 0.0,
   battery: 90.0,
+  startSampling: false,
 };
 
 const robotReducer = (
