@@ -22,6 +22,7 @@ const Joystick = ({
   const vector = useRef<Array<number>>([0, 0]);
   const Max_OUTPUT_JOYSTICK = 100;
   const { isConnected } = useSelector((state: RootState) => state.bluetooth);
+  const timeIntervalHandler = useRef<any | null>();
 
   useEffect(() => {
     if (joyRef.current) return;
@@ -36,15 +37,14 @@ const Joystick = ({
   }, []);
 
   useEffect(() => {
-    let time: any = null;
     if (!joyRef.current) return;
 
-    if (time) clearInterval(time);
+    clearInterval(timeIntervalHandler?.current);
 
-    time = setInterval(samplingData, sampling);
+    timeIntervalHandler.current = setInterval(samplingData, sampling);
 
     return () => {
-      clearInterval(time);
+      clearInterval(timeIntervalHandler?.current);
     };
   }, [joyRef.current, maxVel, maxRot, isConnected]);
 

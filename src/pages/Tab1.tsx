@@ -12,10 +12,10 @@ import {
   IonToggle,
   IonToolbar,
 } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Joystick from '../components/Joystick/Joystick';
-import { delayMs, setRobotSetPointSpeeds } from '../services/arduino';
+import { setRobotSetPointSpeeds } from '../services/arduino';
 import { RootState } from '../store/reducers';
 import './Tab1.scss';
 

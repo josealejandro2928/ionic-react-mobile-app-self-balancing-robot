@@ -13,25 +13,30 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import useEffectUpdate from '../../hooks/useEffectUpdate';
+import { delayMs } from '../../services/arduino';
 import { RootState } from '../../store/reducers';
 import BetteryLevel from '../BatteryLevel/BatteryLevel';
 import BluetoothList from './../BluetoothList/BluetoothList';
 import './Header.scss';
 
 const Header: React.FC = () => {
-  let location = useLocation();
+  let locationHook = useLocation();
   let [tab, setTab] = useState('');
   let [isBluetoothModalOpen, setOpenBluetoothModal] = useState(false);
   const { error: bluetoothError } = useSelector((state: RootState) => state.bluetooth);
   const [present] = useIonToast();
 
   useEffect(() => {
-    setTab(location.pathname);
-  }, [location, location.pathname]);
+    setTab(locationHook.pathname);
+  }, [locationHook, locationHook.pathname]);
 
-  useEffectUpdate(() => {
+  useEffectUpdate(async () => {
     if (bluetoothError) {
       present(`Error in bluetooth: ${bluetoothError}`, 2500);
+      await delayMs(3000);
+      window.location.assign('/');
+      await delayMs(1000);
+      window.location.reload();
     }
   }, [bluetoothError]);
 

@@ -1,11 +1,11 @@
 import { SET_ROBOT_DYNAMIC_STATE } from '../reducers/robot.reducer';
 import { ERROR_BLUETOOTH } from '../reducers/bluetooth.reducer';
 
-import { arduinoGetRobotState } from '../../services/arduino';
+import { getRobotStateArduino } from '../../services/arduino';
 
 export const getRobotState = () => async (dispatch: Function) => {
   try {
-    let data = await arduinoGetRobotState();
+    let data = await getRobotStateArduino();
     dispatch({
       type: SET_ROBOT_DYNAMIC_STATE,
       payload: data,
@@ -28,6 +28,7 @@ export const updateState =
     posY?: number;
     robotOrien?: number;
     battery?: number;
+    startSampling?: boolean;
   }) =>
   async (dispatch: Function) => {
     dispatch({
