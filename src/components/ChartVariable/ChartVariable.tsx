@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import './ChartVariable.scss';
@@ -9,6 +10,8 @@ const ChartVariable = ({
   color = '',
   x = 0,
   y = 0,
+  yRangeAxis,
+  xRangeAxis,
 }: {
   name: string;
   labelY?: string;
@@ -16,6 +19,8 @@ const ChartVariable = ({
   color?: string;
   x: number;
   y: number;
+  yRangeAxis?: Array<number>;
+  xRangeAxis?: Array<number>;
 }) => {
   const options = useRef<any>({
     responsive: true,
@@ -33,6 +38,20 @@ const ChartVariable = ({
     scales: {},
   });
 
+  if (yRangeAxis) {
+    options.current.scales.y = {
+      suggestedMin: yRangeAxis[0],
+      suggestedMax: yRangeAxis[1],
+    };
+  }
+
+  if (xRangeAxis) {
+    options.current.scales.x = {
+      suggestedMin: xRangeAxis[0],
+      suggestedMax: xRangeAxis[1],
+    };
+  }
+
   const data = useRef<any>({
     labels: [],
     datasets: [
@@ -49,11 +68,13 @@ const ChartVariable = ({
   });
   const charRer = useRef<any>();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(options.current)
+  }, []);
 
   useEffect(() => {
     if (!charRer.current) return;
-    if (data.current.labels.length > 50) {
+    if (data.current.labels.length > 40) {
       data.current.labels.shift();
       data.current.datasets[0].data.shift();
     }

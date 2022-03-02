@@ -90,6 +90,7 @@ const Tab3: React.FC = () => {
   async function gettingDataState() {
     timerPointer.current += (samplingParams?.sampleTime as number) / 1000;
     dispatch(getRobotState());
+    // dispatch(updateState({ incliAngle: 5 * Math.sin(2 * Math.PI * timerPointer.current) }));
   }
 
   function getDataToPlotFromSettings(variable: string) {
@@ -100,6 +101,7 @@ const Tab3: React.FC = () => {
           color: '#1976d2',
           x: timerPointer.current,
           y: (globalRobotState as any)[variable],
+          yRangeAxis: [-20, 20],
         };
       case 'linearVelocity':
         return {
@@ -107,6 +109,7 @@ const Tab3: React.FC = () => {
           color: '#d32f2f',
           x: timerPointer.current,
           y: (globalRobotState as any)[variable],
+          yRangeAxis: [-2, 2],
         };
       case 'angularVelocity':
         return {
@@ -114,6 +117,7 @@ const Tab3: React.FC = () => {
           color: '#fb8c00',
           x: timerPointer.current,
           y: (globalRobotState as any)[variable],
+          yRangeAxis: [-4, 4],
         };
       case 'position':
         return {
@@ -121,6 +125,8 @@ const Tab3: React.FC = () => {
           color: '#388e3c',
           x: globalRobotState.posX,
           y: globalRobotState.posY,
+          yRangeAxis: [-1, 1],
+          xRangeAxis: [-1, 1],
         };
     }
   }
@@ -170,7 +176,8 @@ const Tab3: React.FC = () => {
             {samplingParams?.dataDisplayed === 'chart' && (
               <>
                 {samplingParams?.variables?.map((value: string) => {
-                  const { name, color, x, y }: any = getDataToPlotFromSettings(value);
+                  const { name, color, x, y, yRangeAxis, xRangeAxis }: any =
+                    getDataToPlotFromSettings(value);
                   let labelX = value === 'position' ? (x || 0.0).toFixed(2) : '';
                   return (
                     <ChartVariable
@@ -180,6 +187,8 @@ const Tab3: React.FC = () => {
                       x={x}
                       y={y}
                       labelX={labelX}
+                      yRangeAxis={yRangeAxis}
+                      xRangeAxis={xRangeAxis}
                     />
                   );
                 })}

@@ -6,7 +6,7 @@ export interface IRobotState {
   posX: number;
   posY: number;
   robotOrien: number;
-  battery: number;
+  battery?: number;
   startSampling?: boolean;
 }
 /////////////////////////////////////////////////////////////////

@@ -49,7 +49,8 @@ export async function getRobotStateArduino(): Promise<IRobotState> {
   await BluetoothSerial.write(COMMAND_GETSTATE);
   let count = await BluetoothSerial.available();
   // 7x4 + 7x1 + 1
-  while (count < 35) {
+  while (count < 44) {
+    // console.log("🚀 ~ file: arduino.ts ~ line 53 ~ getRobotStateArduino ~ count", count)
     count = await BluetoothSerial.available();
   }
   for (let i = 0; i < AMOUNT_DATA_BLUETOOTH_STATE; i++) {
@@ -65,7 +66,7 @@ export async function getRobotStateArduino(): Promise<IRobotState> {
     posX: state[3] || 0.0,
     posY: state[4] || 0.0,
     robotOrien: state[5] || 0,
-    battery: state[6] || 0,
+    battery:state[6] || 0
   };
   await BluetoothSerial.clear();
   return rState;
