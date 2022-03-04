@@ -51,6 +51,7 @@ const Header: React.FC = () => {
           {tab === '/tab1' && <IonTitle>Driver</IonTitle>}
           {tab === '/tab2' && <IonTitle>Adjust Controllers</IonTitle>}
           {tab === '/tab3' && <IonTitle>Metrics</IonTitle>}
+          {tab === '/tab4' && <IonTitle>Autonomus</IonTitle>}
 
           <IonButton
             onClick={openModalBluetooth}

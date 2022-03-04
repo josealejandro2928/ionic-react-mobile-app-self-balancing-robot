@@ -68,9 +68,9 @@ const ChartVariable = ({
   });
   const charRer = useRef<any>();
 
-  useEffect(() => {
-    console.log(options.current)
-  }, []);
+  // useEffect(() => {
+  //   console.log(options.current)
+  // }, []);
 
   useEffect(() => {
     if (!charRer.current) return;

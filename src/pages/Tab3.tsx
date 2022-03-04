@@ -40,6 +40,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 const Tab3: React.FC = () => {
   const dispatch = useDispatch();
   const globalRobotState = useSelector((state: RootState) => state.robot);
+  const startSampling = useSelector((state: RootState) => state.robot.startSampling);
   const { isConnected } = useSelector((state: RootState) => state.bluetooth);
   const [presentToast] = useIonToast();
 
@@ -49,9 +50,12 @@ const Tab3: React.FC = () => {
     sampleTime: number;
     variables: Array<string>;
     dataDisplayed: string;
-  } | null>();
+  } | null>({
+    sampleTime: 150,
+    variables: ['incliAngle', 'linearVelocity'],
+    dataDisplayed: 'table',
+  });
 
-  const [startSampling, setStartSampling] = useState<boolean>(false);
   const timeIntervalHandler = useRef<any | null>();
   let timerPointer = useRef<number>(0);
   const [showData, setShowData] = useState<boolean>(true);
@@ -64,14 +68,12 @@ const Tab3: React.FC = () => {
   function onCloseFormModalParams(data: any) {
     if (data) {
       setSamplingParams(data);
-      setStartSampling(true);
       dispatch(updateState({ startSampling: true }));
     }
     dismissModal();
   }
 
   function onStopSampling() {
-    setStartSampling(false);
     dispatch(updateState({ startSampling: false }));
   }
 

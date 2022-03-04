@@ -10,7 +10,7 @@ import {
   setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { gameControllerOutline, analyticsOutline, cogOutline } from 'ionicons/icons';
+import { gameControllerOutline, analyticsOutline, cogOutline, logoAndroid } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -34,6 +34,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.scss';
 import Header from './components/Header/Header';
+import Autonomus from './pages/Autonomus';
 
 setupIonicReact();
 
@@ -52,6 +53,9 @@ const App: React.FC = () => (
           <Route path='/tab3'>
             <Tab3 />
           </Route>
+          <Route path='/tab4'>
+            <Autonomus />
+          </Route>
           <Route exact path='/'>
             <Redirect to='/tab1' />
           </Route>
@@ -60,6 +64,10 @@ const App: React.FC = () => (
           <IonTabButton tab='tab1' href='/tab1'>
             <IonIcon icon={gameControllerOutline} />
             <IonLabel>Driver</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab='tab4' href='/tab4'>
+            <IonIcon icon={logoAndroid} />
+            <IonLabel>Auto</IonLabel>
           </IonTabButton>
           <IonTabButton tab='tab2' href='/tab2'>
             <IonIcon icon={cogOutline} />
