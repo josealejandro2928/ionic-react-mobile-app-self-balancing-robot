@@ -8,6 +8,7 @@ export interface IRobotState {
   robotOrien: number;
   battery?: number;
   startSampling?: boolean;
+  sampleTime?: number;
 }
 /////////////////////////////////////////////////////////////////
 
@@ -26,6 +27,7 @@ const initialState: IRobotState = {
   robotOrien: 0.0,
   battery: 90.0,
   startSampling: false,
+  sampleTime: 150,
 };
 
 const robotReducer = (

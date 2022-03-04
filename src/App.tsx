@@ -35,6 +35,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.scss';
 import Header from './components/Header/Header';
 import Autonomus from './pages/Autonomus';
+import SamplerUpdateState from './components/SamplerUpdateState/SamplerUpdateState';
 
 setupIonicReact();
 
@@ -80,6 +81,8 @@ const App: React.FC = () => (
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
+
+    <SamplerUpdateState></SamplerUpdateState>
   </IonApp>
 );
 

@@ -29,6 +29,7 @@ export const updateState =
     robotOrien?: number;
     battery?: number;
     startSampling?: boolean;
+    sampleTime?: number;
   }) =>
   async (dispatch: Function) => {
     dispatch({
