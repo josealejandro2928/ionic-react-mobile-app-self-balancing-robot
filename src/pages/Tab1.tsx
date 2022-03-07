@@ -15,7 +15,7 @@ import {
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Joystick from '../components/Joystick/Joystick';
-import { setRobotSetPointSpeeds } from '../services/arduino';
+import { setRobotSetPointSpeedsArduino } from '../services/arduino';
 import { RootState } from '../store/reducers';
 import './Tab1.scss';
 
@@ -28,7 +28,7 @@ const Tab1: React.FC = () => {
   async function onSetVelToArduino(velX: number, velY: number) {
     if (!isConnected) return;
     try {
-      await setRobotSetPointSpeeds(velY, velX);
+      await setRobotSetPointSpeedsArduino(velY, velX);
     } catch (e) {}
   }
 

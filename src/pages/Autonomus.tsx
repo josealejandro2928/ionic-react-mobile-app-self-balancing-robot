@@ -1,43 +1,70 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { IonPage, IonContent, IonHeader, IonToolbar } from '@ionic/react';
+import {
+  IonPage,
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonButton,
+  IonItem,
+  IonLabel,
+  IonList,
+  useIonToast,
+} from '@ionic/react';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Canvas2DRobot from '../components/Canvas2DRobot/Canvas2DRobot';
 import { updateState } from '../store/actions/robot.actions';
 import ShowState from '../components/ShowState/ShowState';
 import './Autonomus.scss';
+import {
+  resetDynamicalStateArduino,
+  setRobotPointTrakerArduino,
+  setRobotSetPointSpeedsArduino,
+} from '../services/arduino';
+import { RootState } from '../store/reducers';
+import { errorDeviceConnection } from '../store/actions/bluetooth.actions';
 
 const Autonomus = () => {
   const [startPath, setStartPath] = useState(false);
   const [setPoint, setSetPoint] = useState([0, 0]);
+  const { isConnected } = useSelector((state: RootState) => state.bluetooth);
   const dispatch = useDispatch();
+  const [presentToast] = useIonToast();
 
-  const timerHandlerRef = useRef<any>();
-
-  function inStartPointTraker(x: any, y: any) {
-    setStartPath(true);
-    setSetPoint([x, -1 * y]);
+  async function initPointTraker(x: any, y: any) {
+    try {
+      if (!isConnected) {
+        presentToast('You must to be connected to the robot', 2000);
+        return;
+      }
+      setStartPath(true);
+      setSetPoint([x, -1 * y]);
+      await setRobotPointTrakerArduino(-1 * y, x);
+      dispatch(updateState({ startSampling: true }));
+    } catch (e: any) {
+      dispatch(errorDeviceConnection(e.message || 'Lost connection'));
+    }
   }
 
-  useEffect(() => {
-    if (!startPath) {
-      clearInterval(timerHandlerRef.current);
-      return;
+  async function onStopSampling() {
+    try {
+      await setRobotSetPointSpeedsArduino(0, 0);
+      setStartPath(false);
+      dispatch(updateState({ startSampling: false }));
+    } catch (e: any) {
+      dispatch(errorDeviceConnection(e.message || 'Lost connection'));
     }
+  }
 
-    let counterX = 0;
-    let counterY = 0;
-    timerHandlerRef.current = setInterval(() => {
-      counterX -= 0.05;
-      counterY -= 0.01;
-      let orientation = Math.random() * 360;
-      dispatch(updateState({ posX: counterX, posY: counterY, robotOrien: orientation }));
-    }, 150);
-
-    return () => {
-      clearInterval(timerHandlerRef.current);
-    };
-  }, [startPath]);
+  async function onResetStateArduino() {
+    try {
+      await setRobotSetPointSpeedsArduino(0, 0);
+      await resetDynamicalStateArduino();
+      dispatch(updateState({ posX: 0, posY: 0, robotOrien: 0 }));
+    } catch (e: any) {
+      dispatch(errorDeviceConnection(e.message || 'Lost connection'));
+    }
+  }
 
   return (
     <IonPage>
@@ -45,8 +72,20 @@ const Autonomus = () => {
         <IonHeader>
           <IonToolbar></IonToolbar>
         </IonHeader>
-        <Canvas2DRobot start={startPath} goToPoint={inStartPointTraker} setPoint={setPoint} />
+        <Canvas2DRobot start={startPath} goToPoint={initPointTraker} setPoint={setPoint} />
         <ShowState variables={['position']} />
+
+        <IonList style={{ marginTop: '1px' }}>
+          <IonItem disabled={!isConnected}>
+            <IonLabel>Actions:</IonLabel>
+            <IonLabel slot='end'>
+              <IonButton color='danger' onClick={onStopSampling}>
+                Stop
+              </IonButton>
+              <IonButton onClick={onResetStateArduino}>Reset state</IonButton>
+            </IonLabel>
+          </IonItem>
+        </IonList>
       </IonContent>
     </IonPage>
   );

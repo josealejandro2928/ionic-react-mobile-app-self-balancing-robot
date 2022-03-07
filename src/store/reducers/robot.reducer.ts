@@ -22,10 +22,10 @@ const initialState: IRobotState = {
   linearVelocity: 0.0,
   angularVelocity: 0.0,
   incliAngle: 0.0,
-  posX: 0.0,
-  posY: 0.0,
+  posX: 0,
+  posY: 0,
   robotOrien: 0.0,
-  battery: 90.0,
+  battery: 50.0,
   startSampling: false,
   sampleTime: 150,
 };

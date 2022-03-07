@@ -148,7 +148,7 @@ export async function setConstantPIDAngularVelocityArduino(kc: number, ki: numbe
   await BluetoothSerial.write(data);
 }
 
-export async function setRobotSetPointSpeeds(velocity: number, angular_velocity: number) {
+export async function setRobotSetPointSpeedsArduino(velocity: number, angular_velocity: number) {
   const data: Uint8Array = convertFloat2Uint8Array(
     new Float32Array([velocity, angular_velocity]),
     Uint8Array
@@ -157,13 +157,13 @@ export async function setRobotSetPointSpeeds(velocity: number, angular_velocity:
   await BluetoothSerial.write(data);
 }
 
-export async function setRobotPointTraker(posX: number, posY: number) {
+export async function setRobotPointTrakerArduino(posX: number, posY: number) {
   const data: Uint8Array = convertFloat2Uint8Array(new Float32Array([posX, posY]), Uint8Array);
   await BluetoothSerial.write(POINT_TRACKER_MODE);
   await BluetoothSerial.write(data);
 }
 
-export async function stopRobotPointTracker() {
+export async function stopRobotPointTrackerArduino() {
   await BluetoothSerial.write(STOP_POINT_TRACKER_MODE);
 }
 

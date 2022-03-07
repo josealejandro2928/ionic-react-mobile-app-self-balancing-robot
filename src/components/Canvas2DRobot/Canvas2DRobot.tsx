@@ -15,13 +15,15 @@ const Canvas2DRobot = ({
   setPoint?: Array<number>;
 }) => {
   const [presentAlert] = useIonAlert();
-  const { posX, posY, robotOrien } = useSelector((state: RootState) => state.robot);
+  const { posX, posY, robotOrien, angularVelocity } = useSelector(
+    (state: RootState) => state.robot
+  );
   const canvasRef = useRef<any>();
   let canvasHeight = 0;
   let canvasWidth = 0;
   let transX = 0;
   let transY = 0;
-  const pxCm = 1;
+  const pxCm = 1.0;
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -71,21 +73,21 @@ const Canvas2DRobot = ({
     transY = canvas.height * 0.5;
 
     //// Drawing the floor /////
-    ctx.fillStyle = '#f5f5f5';
+    ctx.fillStyle = '#eeeeee';
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     grid();
 
     ////// Center the canvas coord. ///////////////////////////////
     ctx.translate(transX, transY);
     setpoint(setPoint[0], setPoint[1]);
-    let rawData = processDataFromState(posX, posY, robotOrien);
+    let rawData = processDataFromState(posX, posY, robotOrien, angularVelocity);
     robot(rawData.x, rawData.y, rawData.orient);
     ctx.translate(transX, transY);
 
     ///////////////////////Functions///////////////////////////////////
     function grid() {
       ctx.lineWidth = 1;
-      ctx.strokeStyle = '#757575';
+      ctx.strokeStyle = '#bdbdbd';
 
       ctx.moveTo(canvasWidth / 2, 0);
       ctx.lineTo(canvasWidth / 2, canvasHeight);
@@ -109,13 +111,38 @@ const Canvas2DRobot = ({
       ctx.rotate((-1 * rotDegree * Math.PI) / 180);
       ctx.translate(-x, y);
 
-      ctx.fillStyle = '#757575';
+      ctx.fillStyle = '#616161';
       ctx.fillRect(centerRobotX, centerRobotY, width, height);
       ctx.fillStyle = '#3949ab';
-      ctx.fillRect(centerRobotX + 11, centerRobotY + 8, 8 * pxCm, 6 * pxCm);
+      ctx.fillRect(centerRobotX + 11 * pxCm, centerRobotY + 8 * pxCm, 8 * pxCm, 6 * pxCm);
       ctx.fillStyle = '#000000';
       ctx.fillRect(centerRobotX - wl, -1 * y - hl / 2, wl, hl);
       ctx.fillRect(centerRobotX + width, -1 * y - hl / 2, wl, hl);
+
+      ctx.beginPath();
+      ctx.arc(x + width / 2 - 5 * pxCm, -(y + height / 2 - 5 * pxCm), 1.5 * pxCm, 0, 2 * Math.PI);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(x - width / 2 + 5 * pxCm, -(y + height / 2 - 5 * pxCm), 1.5 * pxCm, 0, 2 * Math.PI);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(x - width / 2 + 5 * pxCm, -(y - height / 2 + 5 * pxCm), 1.5 * pxCm, 0, 2 * Math.PI);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(x + width / 2 - 5 * pxCm, -(y - height / 2 + 5 * pxCm), 1.5 * pxCm, 0, 2 * Math.PI);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.strokeStyle = '#4caf50';
+      canvas_arrow(ctx, x, -(y + height / 2), x, -(y + 1.5*height));
+      ctx.stroke();
+
       ctx.restore();
     }
 
@@ -130,12 +157,31 @@ const Canvas2DRobot = ({
       ctx.fill();
       ctx.restore();
     }
+
+    function canvas_arrow(context: any, fromx: number, fromy: number, tox: number, toy: number) {
+      var headlen = 10; // length of head in pixels
+      var dx = tox - fromx;
+      var dy = toy - fromy;
+      var angle = Math.atan2(dy, dx);
+      context.moveTo(fromx, fromy);
+      context.lineTo(tox, toy);
+      context.lineTo(
+        tox - headlen * Math.cos(angle - Math.PI / 6),
+        toy - headlen * Math.sin(angle - Math.PI / 6)
+      );
+      context.moveTo(tox, toy);
+      context.lineTo(
+        tox - headlen * Math.cos(angle + Math.PI / 6),
+        toy - headlen * Math.sin(angle + Math.PI / 6)
+      );
+    }
   }
 
-  function processDataFromState(x: number, y: number, orient: number) {
+  function processDataFromState(x: number, y: number, orient: number, angularVel: number) {
     let posx = x * 100;
     let posy = y * 100;
-    return { x: posx, y: posy, orient };
+
+    return { x: posx, y: posy, orient: orient };
   }
 
   return (

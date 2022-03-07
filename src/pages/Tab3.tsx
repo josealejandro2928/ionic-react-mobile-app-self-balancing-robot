@@ -14,11 +14,11 @@ import {
   useIonModal,
   useIonToast,
 } from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import SamplingDataForm from '../components/SamplingDataForm/SamplingDataForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateState, getRobotState } from '../store/actions/robot.actions';
+import { updateState } from '../store/actions/robot.actions';
 import { RootState } from '../store/reducers';
 import ChartVariable from '../components/ChartVariable/ChartVariable';
 import {
@@ -39,25 +39,21 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const Tab3: React.FC = () => {
   const dispatch = useDispatch();
-  const globalRobotState = useSelector((state: RootState) => state.robot);
-  const startSampling = useSelector((state: RootState) => state.robot.startSampling);
+  const { linearVelocity, angularVelocity, incliAngle, posX, posY, startSampling, sampleTime } =
+    useSelector((state: RootState) => state.robot);
   const { isConnected } = useSelector((state: RootState) => state.bluetooth);
   const [presentToast] = useIonToast();
-
-  useEffect(() => {}, []);
 
   const [samplingParams, setSamplingParams] = useState<{
     sampleTime: number;
     variables: Array<string>;
     dataDisplayed: string;
   } | null>({
-    sampleTime: 150,
+    sampleTime: sampleTime as number,
     variables: ['incliAngle', 'linearVelocity'],
     dataDisplayed: 'table',
   });
 
-  const timeIntervalHandler = useRef<any | null>();
-  let timerPointer = useRef<number>(0);
   const [showData, setShowData] = useState<boolean>(true);
 
   const [presentModal, dismissModal] = useIonModal(SamplingDataForm, {
@@ -68,7 +64,7 @@ const Tab3: React.FC = () => {
   function onCloseFormModalParams(data: any) {
     if (data) {
       setSamplingParams(data);
-      dispatch(updateState({ startSampling: true }));
+      dispatch(updateState({ startSampling: true, sampleTime: data.sampleTime }));
     }
     dismissModal();
   }
@@ -81,19 +77,7 @@ const Tab3: React.FC = () => {
     if (!isConnected) {
       presentToast('You must to be connected to the robot', 2000);
     }
-    if (!startSampling || !isConnected) {
-      clearInterval(timeIntervalHandler.current);
-      timerPointer.current = 0;
-      return;
-    }
-    timeIntervalHandler.current = setInterval(gettingDataState, samplingParams?.sampleTime);
   }, [startSampling, isConnected]);
-
-  async function gettingDataState() {
-    timerPointer.current += (samplingParams?.sampleTime as number) / 1000;
-    dispatch(getRobotState());
-    // dispatch(updateState({ incliAngle: 5 * Math.sin(2 * Math.PI * timerPointer.current) }));
-  }
 
   function getDataToPlotFromSettings(variable: string) {
     switch (variable) {
@@ -101,32 +85,32 @@ const Tab3: React.FC = () => {
         return {
           name: 'Inclination[deg] vs t[s]',
           color: '#1976d2',
-          x: timerPointer.current,
-          y: (globalRobotState as any)[variable],
-          yRangeAxis: [-20, 20],
+          x: 0,
+          y: incliAngle,
+          yRangeAxis: [-15, 15],
         };
       case 'linearVelocity':
         return {
           name: 'Velocity[m/s] vs t[s]',
           color: '#d32f2f',
-          x: timerPointer.current,
-          y: (globalRobotState as any)[variable],
+          x: 0,
+          y: linearVelocity,
           yRangeAxis: [-2, 2],
         };
       case 'angularVelocity':
         return {
           name: 'Angular vel.[rad/s] vs t[s]',
           color: '#fb8c00',
-          x: timerPointer.current,
-          y: (globalRobotState as any)[variable],
+          x: 0,
+          y: angularVelocity,
           yRangeAxis: [-4, 4],
         };
       case 'position':
         return {
           name: 'PosY[m] vs PosX[m] ',
           color: '#388e3c',
-          x: globalRobotState.posX,
-          y: globalRobotState.posY,
+          x: posX,
+          y: posY,
           yRangeAxis: [-1, 1],
           xRangeAxis: [-1, 1],
         };
