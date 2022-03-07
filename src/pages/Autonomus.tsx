@@ -72,7 +72,9 @@ const Autonomus = () => {
         <IonHeader>
           <IonToolbar></IonToolbar>
         </IonHeader>
+        <br />
         <Canvas2DRobot start={startPath} goToPoint={initPointTraker} setPoint={setPoint} />
+        <br />
         <ShowState variables={['position']} />
 
         <IonList style={{ marginTop: '1px' }}>
