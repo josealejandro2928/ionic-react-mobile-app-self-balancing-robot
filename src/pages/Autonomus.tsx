@@ -39,7 +39,7 @@ const Autonomus = () => {
       }
       setStartPath(true);
       setSetPoint([x, -1 * y]);
-      await setRobotPointTrakerArduino(-1 * y, x);
+      await setRobotPointTrakerArduino(y, -1 * x);
       dispatch(updateState({ startSampling: true }));
     } catch (e: any) {
       dispatch(errorDeviceConnection(e.message || 'Lost connection'));
@@ -49,8 +49,8 @@ const Autonomus = () => {
   async function onStopSampling() {
     try {
       await setRobotSetPointSpeedsArduino(0, 0);
-      setStartPath(false);
       dispatch(updateState({ startSampling: false }));
+      setStartPath(false);
     } catch (e: any) {
       dispatch(errorDeviceConnection(e.message || 'Lost connection'));
     }
@@ -58,7 +58,7 @@ const Autonomus = () => {
 
   async function onResetStateArduino() {
     try {
-      await setRobotSetPointSpeedsArduino(0, 0);
+      await onStopSampling();
       await resetDynamicalStateArduino();
       dispatch(updateState({ posX: 0, posY: 0, robotOrien: 0 }));
     } catch (e: any) {

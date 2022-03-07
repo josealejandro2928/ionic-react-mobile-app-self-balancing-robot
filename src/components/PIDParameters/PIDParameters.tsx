@@ -237,13 +237,13 @@ const PIDParameters = () => {
             <IonItem>
               <IonRange
                 disabled={!editCtrVel}
-                debounce={100}
+                debounce={50}
                 pinFormatter={pinFormater}
                 onIonChange={(e) => setVelCtrNewValue(e, 2)}
                 pin
                 min={-5}
                 max={5}
-                step={0.005}
+                step={0.0025}
                 value={ctrVel[2]}
               >
                 <IonLabel slot='start'>Kd:</IonLabel>

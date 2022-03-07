@@ -32,6 +32,7 @@ const Canvas2DRobot = ({
 
   async function getMousePos(canvas: any, evt: any) {
     var rect = canvas.getBoundingClientRect();
+
     let data = {
       x: evt.clientX - rect.left - transX,
       y: -1 * (evt.clientY - rect.top - transY),
@@ -64,7 +65,7 @@ const Canvas2DRobot = ({
 
   function draw() {
     const canvas: HTMLCanvasElement = canvasRef.current;
-    canvasHeight = canvas.getClientRects()[0]?.height || 240;
+    canvasHeight = canvas.getClientRects()[0]?.height || 275;
     canvasWidth = canvas.getClientRects()[0]?.width || 360;
     canvas.height = canvasHeight;
     canvas.width = canvasWidth;
@@ -80,7 +81,7 @@ const Canvas2DRobot = ({
     ////// Center the canvas coord. ///////////////////////////////
     ctx.translate(transX, transY);
     setpoint(setPoint[0], setPoint[1]);
-    let rawData = processDataFromState(posX, posY, robotOrien, angularVelocity);
+    let rawData = processDataFromState(posY, posX, robotOrien, angularVelocity);
     robot(rawData.x, rawData.y, rawData.orient);
     ctx.translate(transX, transY);
 
@@ -140,7 +141,7 @@ const Canvas2DRobot = ({
 
       ctx.beginPath();
       ctx.strokeStyle = '#4caf50';
-      canvas_arrow(ctx, x, -(y + height / 2), x, -(y + 1.5*height));
+      canvas_arrow(ctx, x, -(y + height / 2), x, -(y + 1.5 * height));
       ctx.stroke();
 
       ctx.restore();
@@ -178,7 +179,7 @@ const Canvas2DRobot = ({
   }
 
   function processDataFromState(x: number, y: number, orient: number, angularVel: number) {
-    let posx = x * 100;
+    let posx = -1 * x * 100;
     let posy = y * 100;
 
     return { x: posx, y: posy, orient: orient };
