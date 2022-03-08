@@ -60,6 +60,7 @@ const Autonomus = () => {
     try {
       await onStopSampling();
       await resetDynamicalStateArduino();
+      setSetPoint([0, 0]);
       dispatch(updateState({ posX: 0, posY: 0, robotOrien: 0 }));
     } catch (e: any) {
       dispatch(errorDeviceConnection(e.message || 'Lost connection'));

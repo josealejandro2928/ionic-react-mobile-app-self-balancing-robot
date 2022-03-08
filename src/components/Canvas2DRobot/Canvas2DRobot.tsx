@@ -21,8 +21,8 @@ const Canvas2DRobot = ({
   const canvasRef = useRef<any>();
   let canvasHeight = 0;
   let canvasWidth = 0;
-  let transX = 0;
-  let transY = 0;
+  let transX = useRef<number>(0);
+  let transY = useRef<number>(0);
   const pxCm = 1.0;
 
   useEffect(() => {
@@ -31,18 +31,15 @@ const Canvas2DRobot = ({
   }, [canvasRef.current, setPoint, posX, posY, robotOrien]);
 
   async function getMousePos(canvas: any, evt: any) {
-    var rect = canvas.getBoundingClientRect();
-
+    const rect = canvas.getBoundingClientRect();
     let data = {
-      x: evt.clientX - rect.left - transX,
-      y: -1 * (evt.clientY - rect.top - transY),
+      x: evt.clientX - rect.left - transX.current,
+      y: -1 * (evt.clientY - rect.top - transY.current),
     };
-
     if (start) {
       goToPoint(convertToMetters(data.x), convertToMetters(data.y));
       return;
     }
-
     await presentAlert({
       message: `Do you want to start a path to the point ( ${(data.x / 100).toFixed(1)} m, ${(
         data.y / 100
@@ -70,8 +67,8 @@ const Canvas2DRobot = ({
     canvas.height = canvasHeight;
     canvas.width = canvasWidth;
     let ctx: CanvasRenderingContext2D = canvas.getContext('2d') as any;
-    transX = canvas.width * 0.5;
-    transY = canvas.height * 0.5;
+    transX.current = canvas.width * 0.5;
+    transY.current = canvas.height * 0.5;
 
     //// Drawing the floor /////
     ctx.fillStyle = '#eeeeee';
@@ -79,11 +76,11 @@ const Canvas2DRobot = ({
     grid();
 
     ////// Center the canvas coord. ///////////////////////////////
-    ctx.translate(transX, transY);
+    ctx.translate(transX.current, transY.current);
     setpoint(setPoint[0], setPoint[1]);
     let rawData = processDataFromState(posY, posX, robotOrien, angularVelocity);
     robot(rawData.x, rawData.y, rawData.orient);
-    ctx.translate(transX, transY);
+    ctx.translate(transX.current, transY.current);
 
     ///////////////////////Functions///////////////////////////////////
     function grid() {
