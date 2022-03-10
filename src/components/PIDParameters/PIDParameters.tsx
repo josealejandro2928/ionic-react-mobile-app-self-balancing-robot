@@ -1,4 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
+  IonButton,
+  IonIcon,
   IonItem,
   IonItemDivider,
   IonLabel,
@@ -9,10 +12,10 @@ import {
   useIonToast,
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/reducers';
 import './PIDParameters.scss';
-
+import { refreshOutline } from 'ionicons/icons';
 import {
   getConstantPIDAngularVelocityArduino,
   getConstantPIDVelocityArduino,
@@ -22,6 +25,8 @@ import {
   setConstantPIDAngularVelocityArduino,
   delayMs,
 } from '../../services/arduino';
+import { updateState } from '../../store/actions/robot.actions';
+import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial';
 
 const PIDParameters = () => {
   const iKc = 23.75;
@@ -42,8 +47,10 @@ const PIDParameters = () => {
   const [editCtrAngle, setEditCtrAngle] = useState(false);
   const [editCtrVel, setEditCtrVel] = useState(false);
   const [editCtrRot, setEditCtrRot] = useState(false);
+  const dispatch = useDispatch();
   const [present] = useIonToast();
   const { isConnected } = useSelector((state: RootState) => state.bluetooth);
+  const { startSampling } = useSelector((state: RootState) => state.robot);
 
   useEffect(() => {
     if (isConnected) {
@@ -59,17 +66,26 @@ const PIDParameters = () => {
   ///////////GETTING THE CURRENT PARAMETTERS OF THE CONTROLLERS ////////////////////////////
   async function getData() {
     try {
-      await delayMs(1000);
+      ///////////// Stop the global Sampling if its runinng ///////////////////
+      let lastStartSampling = startSampling;
+      await dispatch(updateState({ startSampling: false }));
+      ////////////////////////////////////////////////////////////////////////
+      await delayMs(300);
+      ////////// Cleaning the residual data in the buffer //////////////////
+      await BluetoothSerial.clear();
+      /////////////////////////////////////////////////////////////////////
       const dataAngle = await getConstantPIDInclinationArduino();
       setCtrAngle(dataAngle || [iKc, iKi, iKd]);
-      await delayMs(230);
+      await delayMs(300);
       const dataVel = await getConstantPIDVelocityArduino();
       setCtrVel(dataVel || [vKc, vKi, vKd]);
-      await delayMs(230);
+      await delayMs(300);
       const dataRot = await getConstantPIDAngularVelocityArduino();
       setCtrRot(dataRot || [rKc, rKi, rKd]);
-      await delayMs(500);
+      await delayMs(300);
       setFirstLoad(false);
+      ////////////////// RESTORE THE STATE OF GLOBAL SAMPLING ///////////////////
+      await dispatch(updateState({ startSampling: lastStartSampling }));
     } catch (e) {
       present('The Robot is not connected, or something happend', 2000);
     }
@@ -127,6 +143,16 @@ const PIDParameters = () => {
 
   return (
     <div className='PIDParameters'>
+      <IonList style={{ marginTop: '1px' }}>
+        <IonItem disabled={!isConnected}>
+          <IonLabel>Actions:</IonLabel>
+          <IonLabel slot='end'>
+            <IonButton onClick={getData} fill='clear'>
+              <IonIcon icon={refreshOutline}></IonIcon>
+            </IonButton>
+          </IonLabel>
+        </IonItem>
+      </IonList>
       <IonList>
         <IonItemDivider>
           <IonLabel>Inclination PID Controller</IonLabel>
@@ -179,7 +205,7 @@ const PIDParameters = () => {
                 onIonChange={(e) => setAngleCtrNewValue(e, 2)}
                 pin
                 min={-5}
-                max={10}
+                max={5}
                 step={0.05}
                 value={ctrAngle[2]}
               >
@@ -241,9 +267,9 @@ const PIDParameters = () => {
                 pinFormatter={pinFormater}
                 onIonChange={(e) => setVelCtrNewValue(e, 2)}
                 pin
-                min={-5}
-                max={5}
-                step={0.0025}
+                min={-1.5}
+                max={1.5}
+                step={0.005}
                 value={ctrVel[2]}
               >
                 <IonLabel slot='start'>Kd:</IonLabel>
