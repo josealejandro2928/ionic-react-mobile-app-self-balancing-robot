@@ -7,7 +7,7 @@
     "@awesome-cordova-plugins/core": "^5.39.1",
     "@awesome-cordova-plugins/spinner-dialog": "^5.39.1",
     "@awesome-cordova-plugins/vibration": "^5.39.1",
-    "@capacitor/android": "3.4.1",
+    "@capacitor/android": "3.4.3",
     "@capacitor/app": "1.1.0",
     "@capacitor/core": "3.4.1",
     "@capacitor/haptics": "1.1.4",
