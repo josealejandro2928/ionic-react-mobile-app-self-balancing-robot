@@ -11,6 +11,7 @@ interface TabContainerProp {
     indicatorStyle?: 'simple' | 'bottomLine' | 'button'
     onTabChange?: Function,
     lazy?: boolean;
+    transitionMs?: number;
 }
 
 interface TabHeader {
@@ -26,6 +27,7 @@ const TabContainer = ({
     color = '#428CFF',
     indicatorStyle = 'bottomLine',
     onTabChange = (index: number) => { },
+    transitionMs = 375,
     lazy = false }:
     TabContainerProp) => {
 
@@ -96,7 +98,8 @@ const TabContainer = ({
                     return (<div style={{
                         transform: 'translate3d(-100%, 0px, 0px)',
                         height: '0px',
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        transition: `transform ${transitionMs / 1000}s ease`
                     }} key={index} className={'body-content'}>
                         {!lazy && tabEl}
                     </div>)
@@ -105,7 +108,8 @@ const TabContainer = ({
                     return (<div style={{
                         transform: 'translate3d(100%, 0px, 0px)',
                         height: '0px',
-                        overflow: 'hidden'
+                        overflow: 'hidden',
+                        transition: `transform ${transitionMs / 1000}s ease`
                     }} key={index} className={'body-content'}>
                         {!lazy && tabEl}
                     </div>)
@@ -114,7 +118,8 @@ const TabContainer = ({
                     return (<div style={{
                         visibility: 'inherit',
                         overflow: 'auto',
-                        height: 'auto'
+                        height: 'auto',
+                        transition: `transform ${transitionMs / 1000}s ease`
                     }} key={index} className={'body-content'}>
                         {tabEl}
                     </div>)

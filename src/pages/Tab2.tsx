@@ -3,6 +3,7 @@ import PIDParameters from '../components/PIDParameters/PIDParameters';
 import './Tab2.scss';
 
 import TabContainer, { TabItem } from '../components/Tab/Tab';
+import RobotParams from '../components/RobotParams/RobotParams';
 
 
 const Tab2: React.FC = () => {
@@ -12,14 +13,12 @@ const Tab2: React.FC = () => {
         <IonHeader>
           <IonToolbar></IonToolbar>
         </IonHeader>
-
-        {/* <PIDParameters></PIDParameters> */}
-        <TabContainer backgroundColor='#222222'>
+        <TabContainer transitionMs={375} backgroundColor='#222222'>
           <TabItem name='PID Adjustments' >
             <PIDParameters></PIDParameters>
           </TabItem>
           <TabItem name='Robot params'>
-            tab #2
+            <RobotParams></RobotParams>
           </TabItem>
         </TabContainer>
       </IonContent>

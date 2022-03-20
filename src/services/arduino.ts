@@ -14,6 +14,8 @@ const RESET_DYNAMICAL_STATE = 'R';
 const POINT_TRACKER_MODE = 'P';
 const STOP_POINT_TRACKER_MODE = 'S';
 const GET_BATTERY_STATE = 'T';
+const GET_CONSTANT_PARAMETERS = 'J';
+const SET_CONSTANT_PARAMETERS = 'K';
 ///////////////////////////////////////
 
 //////Data typing//////
@@ -66,7 +68,7 @@ export async function getRobotStateArduino(): Promise<IRobotState> {
     posX: state[3] || 0.0,
     posY: state[4] || 0.0,
     robotOrien: state[5] || 0,
-    battery:state[6] || 0
+    battery: state[6] || 0,
   };
   await BluetoothSerial.clear();
   return rState;
@@ -186,6 +188,30 @@ export async function getBatteryStatusArduino(): Promise<any> {
 
   await BluetoothSerial.clear();
   return battery;
+}
+
+export async function getConstantParameters(): Promise<any> {
+  const estado: any[] = [];
+  await BluetoothSerial.clear();
+  await BluetoothSerial.write(GET_CONSTANT_PARAMETERS);
+  let count = await BluetoothSerial.available();
+  while (count < 6) {
+    count = await BluetoothSerial.available();
+  }
+  for (let i = 0; i < 1; i++) {
+    const data = await BluetoothSerial.readUntil('\n');
+    if (data && data !== '' && data.length > 1) {
+      estado.push(parseFloat(data));
+    }
+  }
+  await BluetoothSerial.clear();
+  return estado;
+}
+
+export async function setConstantParameters(minPwmSpeed: number) {
+  const data: Uint8Array = convertFloat2Uint8Array(new Float32Array([minPwmSpeed]), Uint8Array);
+  await BluetoothSerial.write(SET_CONSTANT_PARAMETERS);
+  await BluetoothSerial.write(data);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
