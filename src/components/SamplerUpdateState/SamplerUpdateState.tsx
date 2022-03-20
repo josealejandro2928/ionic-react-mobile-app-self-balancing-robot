@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/reducers';
-import { updateState, getRobotState } from '../../store/actions/robot.actions';
+import { getRobotState } from '../../store/actions/robot.actions';
 
 const SamplerUpdateState = () => {
   const dispatch = useDispatch();
-  const { startSampling, sampleTime } = useSelector((state: RootState) => state.robot);
-  const { isConnected } = useSelector((state: RootState) => state.bluetooth);
+  const startSampling = useSelector((state: RootState) => state.robot.startSampling);
+  const sampleTime = useSelector((state: RootState) => state.robot.sampleTime);
+  const isConnected = useSelector((state: RootState) => state.bluetooth.isConnected);
   const timeIntervalHandler = useRef<any | null>();
   let timerPointer = useRef<number>(0);
 
@@ -42,4 +43,4 @@ const SamplerUpdateState = () => {
   return <></>;
 };
 
-export default SamplerUpdateState;
+export default memo(SamplerUpdateState);

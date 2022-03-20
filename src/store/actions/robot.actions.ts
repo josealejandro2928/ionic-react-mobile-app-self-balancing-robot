@@ -32,7 +32,7 @@ export const updateState =
     sampleTime?: number;
   }) =>
   async (dispatch: Function) => {
-    dispatch({
+    return dispatch({
       type: SET_ROBOT_DYNAMIC_STATE,
       payload: stateUpdate,
     });

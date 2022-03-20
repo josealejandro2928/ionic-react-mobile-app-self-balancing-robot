@@ -5,12 +5,12 @@ import { RootState } from '../../store/reducers';
 import './BatteryLevel.scss';
 
 const BetteryLevel = ({ slot = 'end' }: { slot?: 'end' | 'start' }) => {
-  const { battery } = useSelector((state: RootState) => state.robot);
+  const battery = useSelector((state: RootState) => state.robot.battery);
   // const { isConnected } = useSelector((state: RootState) => state.bluetooth);
 
   return (
     <div className='BatteryLevel' slot={slot}>
-      <IonLabel className='label'>{battery + '%'}</IonLabel>
+      <IonLabel className='label'>{(battery || 0).toFixed(0) + '%'}</IonLabel>
       <IonLabel className='icon'>
         <IonIcon
           style={{ color: '#fff', fontSize: '24px' }}

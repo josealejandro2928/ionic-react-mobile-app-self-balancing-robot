@@ -1,0 +1,65 @@
+.tab-pp {
+    .header {
+        display: flex;
+        padding: 0px 8px;
+        box-sizing: border-box;
+        justify-content: flex-start;
+        align-items: center;
+        overflow-x: auto;
+
+        .itemlabel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: .5rem 0.65rem;
+            min-height: 48px;
+            box-sizing: border-box;
+            min-width: 74px;
+            text-transform: capitalize;
+            // transition: all ease .25s;
+            cursor: pointer;
+            opacity: 0.7;
+
+            &.simple {
+                position: relative;
+                opacity: 1;
+            }
+
+            &.bottomLine {
+                position: relative;
+                opacity: 1;
+
+                div {
+                    position: absolute;
+                    width: 100%;
+                    bottom: 0;
+                    height: 3px;
+                }
+            }
+
+            &.button {
+                position: relative;
+                opacity: 1;
+                color: inherit;
+                border-radius: 4px;
+            }
+        }
+    }
+
+    .body {
+        position: relative;
+        height: auto;
+        width: 100%;
+
+        .body-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            width: 100%;
+            height: auto;
+            transform: none;
+            transition: transform .375s ease;
+        }
+    }
+}

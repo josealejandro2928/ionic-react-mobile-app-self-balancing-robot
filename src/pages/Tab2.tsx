@@ -2,6 +2,9 @@ import { IonContent, IonHeader, IonPage, IonToolbar } from '@ionic/react';
 import PIDParameters from '../components/PIDParameters/PIDParameters';
 import './Tab2.scss';
 
+import TabContainer, { TabItem } from '../components/Tab/Tab';
+
+
 const Tab2: React.FC = () => {
   return (
     <IonPage>
@@ -10,9 +13,17 @@ const Tab2: React.FC = () => {
           <IonToolbar></IonToolbar>
         </IonHeader>
 
-        <PIDParameters></PIDParameters>
+        {/* <PIDParameters></PIDParameters> */}
+        <TabContainer backgroundColor='#222222'>
+          <TabItem name='PID Adjustments' >
+            <PIDParameters></PIDParameters>
+          </TabItem>
+          <TabItem name='Robot params'>
+            tab #2
+          </TabItem>
+        </TabContainer>
       </IonContent>
-    </IonPage>
+    </IonPage >
   );
 };
 

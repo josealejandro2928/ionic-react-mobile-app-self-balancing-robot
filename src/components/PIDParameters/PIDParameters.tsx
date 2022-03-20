@@ -49,8 +49,8 @@ const PIDParameters = () => {
   const [editCtrRot, setEditCtrRot] = useState(false);
   const dispatch = useDispatch();
   const [present] = useIonToast();
-  const { isConnected } = useSelector((state: RootState) => state.bluetooth);
-  const { startSampling } = useSelector((state: RootState) => state.robot);
+  const isConnected = useSelector((state: RootState) => state.bluetooth.isConnected);
+  const startSampling = useSelector((state: RootState) => state.robot.startSampling);
 
   useEffect(() => {
     if (isConnected) {
@@ -143,16 +143,7 @@ const PIDParameters = () => {
 
   return (
     <div className='PIDParameters'>
-      <IonList style={{ marginTop: '1px' }}>
-        <IonItem disabled={!isConnected}>
-          <IonLabel>Actions:</IonLabel>
-          <IonLabel slot='end'>
-            <IonButton onClick={getData} fill='clear'>
-              <IonIcon icon={refreshOutline}></IonIcon>
-            </IonButton>
-          </IonLabel>
-        </IonItem>
-      </IonList>
+
       <IonList>
         <IonItemDivider>
           <IonLabel>Inclination PID Controller</IonLabel>
@@ -341,6 +332,16 @@ const PIDParameters = () => {
             </IonItem>
           </>
         )}
+      </IonList>
+      <IonList style={{ marginTop: '1px' }}>
+        <IonItem disabled={!isConnected}>
+          <IonLabel>Actions:</IonLabel>
+          <IonLabel slot='end'>
+            <IonButton onClick={getData} fill='clear'>
+              <IonIcon icon={refreshOutline}></IonIcon>
+            </IonButton>
+          </IonLabel>
+        </IonItem>
       </IonList>
     </div>
   );
