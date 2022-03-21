@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import './ChartVariable.scss';
 
@@ -91,4 +91,4 @@ const ChartVariable = ({
   );
 };
 
-export default ChartVariable;
+export default memo(ChartVariable);

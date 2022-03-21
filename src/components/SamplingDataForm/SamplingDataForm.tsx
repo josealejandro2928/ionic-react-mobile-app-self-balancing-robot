@@ -69,7 +69,7 @@ const SamplingDataForm = ({
                 { value: 'incliAngle', label: 'Inclination' },
                 { value: 'linearVelocity', label: 'Linear Vel.' },
                 { value: 'angularVelocity', label: 'Angular Vel.' },
-                { value: 'position', label: 'Position.' },
+                // { value: 'position', label: 'Position.' },
               ]}
             ></SelectOption>
 

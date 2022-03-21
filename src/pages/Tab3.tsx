@@ -39,9 +39,9 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const Tab3: React.FC = () => {
   const dispatch = useDispatch();
-  const { linearVelocity, angularVelocity, incliAngle, posX, posY, startSampling, sampleTime } =
+  const { linearVelocity, angularVelocity, incliAngle, startSampling, sampleTime } =
     useSelector((state: RootState) => state.robot);
-  const { isConnected } = useSelector((state: RootState) => state.bluetooth);
+  const isConnected = useSelector((state: RootState) => state.bluetooth.isConnected);
   const [presentToast] = useIonToast();
 
   const [samplingParams, setSamplingParams] = useState<{
@@ -50,7 +50,7 @@ const Tab3: React.FC = () => {
     dataDisplayed: string;
   } | null>({
     sampleTime: sampleTime as number,
-    variables: ['incliAngle', 'linearVelocity'],
+    variables: ['incliAngle'],
     dataDisplayed: 'table',
   });
 
@@ -105,15 +105,6 @@ const Tab3: React.FC = () => {
           y: angularVelocity,
           yRangeAxis: [-4, 4],
         };
-      case 'position':
-        return {
-          name: 'PosY[m] vs PosX[m] ',
-          color: '#388e3c',
-          x: posX,
-          y: posY,
-          yRangeAxis: [-1, 1],
-          xRangeAxis: [-1, 1],
-        };
     }
   }
 
@@ -121,7 +112,7 @@ const Tab3: React.FC = () => {
     try {
       await resetDynamicalStateArduino();
       dispatch(updateState({ posX: 0, posY: 0, robotOrien: 0 }));
-    } catch (e) {}
+    } catch (e) { }
   }
 
   return (
