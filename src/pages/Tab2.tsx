@@ -13,7 +13,7 @@ const Tab2: React.FC = () => {
         <IonHeader>
           <IonToolbar></IonToolbar>
         </IonHeader>
-        <TabContainer transitionMs={375} backgroundColor='#222222'>
+        <TabContainer lazy transitionMs={375} backgroundColor='#222222'>
           <TabItem name='PID Adjustments' >
             <PIDParameters></PIDParameters>
           </TabItem>

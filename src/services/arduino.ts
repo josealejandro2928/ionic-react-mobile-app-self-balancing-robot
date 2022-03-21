@@ -195,7 +195,7 @@ export async function getConstantParameters(): Promise<any> {
   await BluetoothSerial.clear();
   await BluetoothSerial.write(GET_CONSTANT_PARAMETERS);
   let count = await BluetoothSerial.available();
-  while (count < 6) {
+  while (count < 5) {
     count = await BluetoothSerial.available();
   }
   for (let i = 0; i < 1; i++) {

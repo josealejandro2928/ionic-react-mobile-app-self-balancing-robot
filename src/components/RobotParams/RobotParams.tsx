@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IonList, IonItemDivider, IonLabel, IonItem, IonRange, IonNote, useIonToast, IonButton, IonIcon } from "@ionic/react";
 import { refreshOutline } from "ionicons/icons";
 import { memo, useEffect, useRef, useState } from "react";
@@ -5,10 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { delayMs, getConstantParameters, setConstantParameters } from "../../services/arduino";
 import { updateState } from "../../store/actions/robot.actions";
 import { RootState } from "../../store/reducers";
-
-
 import './RobotParams.scss'
-import useEffectUpdate from '../../hooks/useEffectUpdate';
+
 
 export const RobotParams = () => {
 
