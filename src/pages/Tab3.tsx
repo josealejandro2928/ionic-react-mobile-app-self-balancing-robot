@@ -11,6 +11,7 @@ import {
   IonPage,
   IonToggle,
   IonToolbar,
+  isPlatform,
   useIonModal,
   useIonToast,
 } from '@ionic/react';
@@ -121,6 +122,7 @@ const Tab3: React.FC = () => {
         <IonHeader>
           <IonToolbar></IonToolbar>
         </IonHeader>
+        {isPlatform('ios') && <br />}
         <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0px' }}>
           {!startSampling && (
             <IonButton onClick={() => presentModal()} style={{ margin: '8px', width: '80%' }}>

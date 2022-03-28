@@ -9,8 +9,9 @@ import {
   IonLabel,
   IonList,
   useIonToast,
+  isPlatform,
 } from '@ionic/react';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Canvas2DRobot from '../components/Canvas2DRobot/Canvas2DRobot';
 import { updateState } from '../store/actions/robot.actions';
@@ -73,6 +74,7 @@ const Autonomus = () => {
         <IonHeader>
           <IonToolbar></IonToolbar>
         </IonHeader>
+        {isPlatform('ios') && <br />}
         <br />
         <Canvas2DRobot start={startPath} goToPoint={initPointTraker} setPoint={setPoint} />
         <br />

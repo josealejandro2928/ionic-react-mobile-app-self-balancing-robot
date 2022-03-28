@@ -7,6 +7,7 @@ import {
   IonModal,
   IonContent,
   useIonToast,
+  isPlatform,
 } from '@ionic/react';
 import { bluetooth } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
@@ -64,6 +65,7 @@ const Header: React.FC = () => {
           <BetteryLevel slot='end'></BetteryLevel>
         </IonToolbar>
       </IonHeader>
+      {isPlatform('ios') && <br />}
 
       <IonModal
         isOpen={isBluetoothModalOpen}

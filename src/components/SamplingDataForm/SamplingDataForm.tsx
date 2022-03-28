@@ -6,6 +6,7 @@ import {
   IonList,
   IonPage,
   IonToolbar,
+  isPlatform,
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import SelectOption from '../SelectOption/SelectOption';
@@ -13,7 +14,7 @@ import './SamplingDataForm.scss';
 
 const SamplingDataForm = ({
   data,
-  onDismiss = (data: any) => {},
+  onDismiss = (data: any) => { },
 }: {
   data: any;
   onDismiss: Function;
@@ -22,7 +23,7 @@ const SamplingDataForm = ({
   const [variables, setVariables] = useState<string[]>(data?.variables || ['incliAngle']);
   const [dataDisplayed, setDataDisplayed] = useState<boolean>(data?.dataDisplayed || 'chart');
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   function onSaveData() {
     onDismiss({ sampleTime: timing, variables, dataDisplayed });
@@ -43,6 +44,7 @@ const SamplingDataForm = ({
             Close
           </IonButton>
         </IonToolbar>
+        {isPlatform('ios') && <br />}
         <div className='SamplingDataForm'>
           <IonList>
             <IonItemDivider>Parameters</IonItemDivider>

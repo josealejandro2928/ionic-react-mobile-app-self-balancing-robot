@@ -11,6 +11,7 @@ import {
   IonTitle,
   IonToggle,
   IonToolbar,
+  isPlatform,
 } from '@ionic/react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -39,6 +40,7 @@ const Tab1: React.FC = () => {
           <IonTitle></IonTitle>
         </IonToolbar>
       </IonHeader>
+      {isPlatform('ios') && <br />}
       <IonContent fullscreen>
         <section className='Tab1'>
           <IonList>
