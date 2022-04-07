@@ -14,6 +14,8 @@ import {
   isPlatform,
   useIonModal,
   useIonToast,
+  useIonViewWillEnter,
+  useIonViewWillLeave,
 } from '@ionic/react';
 import { useEffect, useState } from 'react';
 
@@ -44,6 +46,10 @@ const Tab3: React.FC = () => {
     useSelector((state: RootState) => state.robot);
   const isConnected = useSelector((state: RootState) => state.bluetooth.isConnected);
   const [presentToast] = useIonToast();
+
+  const [show, setShow] = useState(true);
+  useIonViewWillEnter(() => (setShow(true)), []);
+  useIonViewWillLeave(() => (setShow(false)), [])
 
   const [samplingParams, setSamplingParams] = useState<{
     sampleTime: number;
@@ -150,7 +156,7 @@ const Tab3: React.FC = () => {
           </IonItem>
         </IonList>
         {/* ///////////////////////////////GRAFICAS //////////////////////////////////////// */}
-        {showData && (
+        {show && showData && (
           <>
             {samplingParams?.dataDisplayed === 'chart' && (
               <>

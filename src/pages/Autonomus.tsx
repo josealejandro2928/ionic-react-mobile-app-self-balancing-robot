@@ -10,6 +10,8 @@ import {
   IonList,
   useIonToast,
   isPlatform,
+  useIonViewWillEnter,
+  useIonViewWillLeave,
 } from '@ionic/react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +33,10 @@ const Autonomus = () => {
   const { isConnected } = useSelector((state: RootState) => state.bluetooth);
   const dispatch = useDispatch();
   const [presentToast] = useIonToast();
+  const [show, setShow] = useState(true);
+
+  useIonViewWillEnter(() => (setShow(true)), []);
+  useIonViewWillLeave(() => (setShow(false)), [])
 
   async function initPointTraker(x: any, y: any) {
     try {
@@ -76,9 +82,9 @@ const Autonomus = () => {
         </IonHeader>
         {isPlatform('ios') && <br />}
         <br />
-        <Canvas2DRobot start={startPath} goToPoint={initPointTraker} setPoint={setPoint} />
+        {show && <Canvas2DRobot start={startPath} goToPoint={initPointTraker} setPoint={setPoint} />}
         <br />
-        <ShowState variables={['position']} />
+        {show && <ShowState variables={['position']} />}
 
         <IonList style={{ marginTop: '1px' }}>
           <IonItem disabled={!isConnected}>

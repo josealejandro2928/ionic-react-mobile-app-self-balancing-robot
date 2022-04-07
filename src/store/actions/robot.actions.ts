@@ -1,4 +1,8 @@
-import { SET_ROBOT_DYNAMIC_STATE } from '../reducers/robot.reducer';
+import {
+  SET_ROBOT_DYNAMIC_STATE,
+  RESET_ROBOT_DYNAMIC_STATE,
+  PERSIST_ROBOT_DYNAMIC_STATE,
+} from '../reducers/robot.reducer';
 import { ERROR_BLUETOOTH } from '../reducers/bluetooth.reducer';
 
 import { getRobotStateArduino } from '../../services/arduino';
@@ -30,6 +34,8 @@ export const updateState =
     battery?: number;
     startSampling?: boolean;
     sampleTime?: number;
+    persistData?: boolean;
+    records?: Array<any>;
   }) =>
   async (dispatch: Function) => {
     return dispatch({
@@ -37,3 +43,17 @@ export const updateState =
       payload: stateUpdate,
     });
   };
+
+export const resetState = () => async (dispatch: Function) => {
+  return dispatch({
+    type: RESET_ROBOT_DYNAMIC_STATE,
+    payload: null,
+  });
+};
+
+export const persistState = (persistState: boolean) => async (dispatch: Function) => {
+  return dispatch({
+    type: PERSIST_ROBOT_DYNAMIC_STATE,
+    payload: persistState,
+  });
+};

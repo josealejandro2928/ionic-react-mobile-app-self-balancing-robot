@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from 'react';
 import JoyStick from '../../services/joy';
-import { Vibration } from '@awesome-cordova-plugins/vibration';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reducers';
 
