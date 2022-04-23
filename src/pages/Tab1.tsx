@@ -23,7 +23,7 @@ import './Tab1.scss';
 const Tab1: React.FC = () => {
   const { isConnected } = useSelector((state: RootState) => state.bluetooth);
   const [editVel, setEditVel] = useState(false);
-  const [maxVelY, setMaxVelY] = useState(0.6); // m/s
+  const [maxVelY, setMaxVelY] = useState(0.65); // m/s
   const [maxVelX, setMaxVelX] = useState(4); // rad/s
 
   async function onSetVelToArduino(velX: number, velY: number) {
