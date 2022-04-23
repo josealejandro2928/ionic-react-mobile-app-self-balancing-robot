@@ -1,6 +1,6 @@
 {
 	"appId": "apk.controller.selfbalancing.robot.v2.test",
-	"appName": "SBController",
+	"appName": "SB Controller",
 	"webDir": "build",
 	"bundledWebRuntime": false
 }
