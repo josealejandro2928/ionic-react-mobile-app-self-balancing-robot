@@ -100,27 +100,27 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
 Once the repo has been downloaded, run the following commands
 
 ```sh
-   npm install
+npm install
 ```
 ```sh
 ionic serve
 ```
 This runs the project in your web browser but the native pluggins will not work.
 
+### 6. Create the android project
 ```sh
 ionic cap add android
 ```
-for generate the android project
+
+for generate the ios project
 
 ```sh
 ionic cap add ios
 ```
-for generate the ios project
 
 Open the android studio in the folder android and run the app in the simulator.
 
 For live functions and to work directly on the application mounted on the simulator run this.
-
 ```sh
 npm run dev
 ```
