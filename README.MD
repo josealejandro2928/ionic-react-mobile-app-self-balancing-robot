@@ -67,19 +67,63 @@ const initialState: IRobotState = {
 <img src="https://user-images.githubusercontent.com/37028825/165095116-a5686ca1-ed58-4e0a-9b98-04e010421c9a.png" height="680" />
 
 ## UI Tabs compositions
-The main
+The app is composed by tabs and several components for rendering the different UIs.
 
+1. Driver
+2. Automatic
+3. Adjust Controllers
+4. Metrics
 
+<img src="https://user-images.githubusercontent.com/37028825/165102821-c934f39b-0220-4a4f-b4c4-c7a608f18580.png" width="800"  />
 
+## Work with this project
+To collaborate or simply use this project you must have the android environment ready.
+### 1. Download and install Android Studio and install the SDK
+[https://developer.android.com/studio]
 
+### 2. Configure the ANDROID_SDK_ROOT environment variable
+If you are linux user you simply execute this or add it to the appropriate shell-specific config file.
+Example: bash_profile, bashrc etc.
+```sh
+export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+```
+### 3. Go to the AVD manager on android studio and create a simulator 
 
+### 4. Install Node
+[https://nodejs.org/en/]
 
+### 5. Install Ionic cli
+[https://ionicframework.com/docs/intro/cli]
 
+Once the repo has been downloaded, run the following commands
 
+```sh
+   npm install
+```
+```sh
+ionic serve
+```
+This runs the project in your web browser but the native pluggins will not work.
 
+```sh
+ionic cap add android
+```
+for generate the android project
 
+```sh
+ionic cap add ios
+```
+for generate the ios project
 
+Open the android studio in the folder android and run the app in the simulator.
 
+For live functions and to work directly on the application mounted on the simulator run this.
+
+```sh
+npm run dev
+```
 
 
 
