@@ -125,7 +125,12 @@ For live functions and to work directly on the application mounted on the simula
 npm run dev
 ```
 
+## See the Robot repository
+[https://github.com/josealejandro2928/Self-Balancing-Arduino-Robot-Controller]
 
+## videos
+
+[![main video](https://media-exp1.licdn.com/dms/image/sync/C4E27AQHoYDjRXYum1Q/articleshare-shrink_800/0/1650225441705?e=2147483647&v=beta&t=MVa15-GMcQ24pGtz-Pgde-uTOCKB2VxyYCMe7VwTT0s)](https://www.youtube.com/watch?v=NTQIz3hWsak)
 
 
 
