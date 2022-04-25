@@ -1,6 +1,6 @@
 {
   "name": "controller-selfbalancing-robot-v2",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@awesome-cordova-plugins/bluetooth-serial": "^5.39.1",
