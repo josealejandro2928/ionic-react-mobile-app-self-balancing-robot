@@ -13,7 +13,7 @@ import {
   ActionSheetButton,
 } from '@ionic/react';
 import { bluetooth, saveOutline, stopwatchOutline } from 'ionicons/icons';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import useEffectUpdate from '../../hooks/useEffectUpdate';
@@ -91,7 +91,7 @@ const Header: React.FC = () => {
         persistData: false,
         records: []
       }));
-      await File.writeFile(File.externalDataDirectory + '/SBControllerData', 'data.json',
+      await File.writeFile(File.externalDataDirectory, 'data.json',
         data, { replace: true });
       toast("Data saved succefully !!!", 2000);
     } catch (e: any) {
